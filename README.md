@@ -1,1 +1,1 @@
-bot mini
+# [D E P L O Y](https://dashboard.heroku.com/new?template=https://github.com/RAJUHACKERx/BILAL-MD-V11-MINI)
