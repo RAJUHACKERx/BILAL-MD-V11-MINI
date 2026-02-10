@@ -5,7 +5,7 @@ cmd({
   pattern: "ping",
   desc: "Live ping speed monitor",
   category: "main",
-  react: "⚡",
+  react: "👑",
   filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
 
@@ -13,12 +13,12 @@ cmd({
 
     // start reaction
     await conn.sendMessage(from, {
-      react: { text: "⚡", key: m.key }
+      react: { text: "👑", key: m.key }
     });
 
     // initial message
     const msg = await conn.sendMessage(from, {
-      text: "*⚡ Checking ping...*"
+      text: "*TESTING....🤗*"
     }, { quoted: mek });
 
     await sleep(1000);
@@ -38,7 +38,7 @@ cmd({
           key: msg.key,
           type: 14,
           editedMessage: {
-            conversation: `*⚡ LIVE PING :❯ ${ping} ms*`
+            conversation: `*👑 SPEED :❯ ${ping} 👑*`
           }
         }
       }, {});
@@ -48,7 +48,7 @@ cmd({
 
     // end reaction
     await conn.sendMessage(from, {
-      react: { text: "✅", key: m.key }
+      react: { text: "😍", key: m.key }
     });
 
   } catch (e) {
