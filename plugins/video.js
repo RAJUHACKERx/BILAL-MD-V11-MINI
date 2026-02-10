@@ -49,8 +49,8 @@ cmd({
 
         await reply(
             `*👑 YT VIDEO INFO 👑*\n\n` +
-            `*👑 VIDEO NAME 👑* \n${title}\n` +
-            `*DOWNLOADING.....\n\n` +
+            `*👑 VIDEO NAME 👑* \n${title}\n\n` +
+            `*DOWNLOADING.....*\n\n` +
             `*👑 BY :❯ BILAL-MD 👑*`
         );
 
@@ -62,6 +62,6 @@ cmd({
 
     } catch (err) {
         console.error(err);
-        reply("❌ Error while processing your video request.");
+        reply("APKI VIDEO NAHI MIL RAHI 😔*");
     }
 });
