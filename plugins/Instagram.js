@@ -14,11 +14,11 @@ const verifiedContact = {
     },
     message: {
         contactMessage: {
-            displayName: "POP KIDS VERIFIED ✅",
+            displayName: "AI VERIFIED ✅",
             vcard: `BEGIN:VCARD
 VERSION:3.0
 FN:POP KIDS VERIFIED
-ORG:POP KIDS BOT;
+ORG:BILAL-MD;
 TEL;type=CELL;type=VOICE;waid:${config.OWNER_NUMBER || "0000000000"}:+${config.OWNER_NUMBER || "0000000000"}
 END:VCARD`
         }
@@ -32,7 +32,7 @@ const newsletterContext = {
         isForwarded: true,
         forwardedNewsletterMessageInfo: {
             newsletterJid: '120363289379419860@newsletter',
-            newsletterName: 'POP KIDS UPDATES',
+            newsletterName: 'BILAL-MD UPDATES',
             serverMessageId: 143
         }
     }
@@ -56,11 +56,7 @@ async (conn, mek, m, { from, q, reply, sender }) => {
 
         if (!text) {
             return await conn.sendMessage(from, {
-                text: `╭──〔 📎 ɪɴsᴛᴀɢʀᴀᴍ ʟɪɴᴋ ᴍɪssɪɴɢ 〕──
-│
-├─ ᴘʟᴇᴀsᴇ ᴘʀᴏᴠɪᴅᴇ ᴀ ᴠᴀʟɪᴅ ɪɴsᴛᴀɢʀᴀᴍ ᴠɪᴅᴇᴏ ʟɪɴᴋ.
-│
-╰──〔 📥 ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴘᴏᴘ ᴋɪᴅs 〕──`,
+                text: `AP NE INSTAGRAM KI VIDEO DOWNLOAD KARNI HAI 🤔 TO AP US VIDEO KA LINK COPY KAR LO 😊*\n*PHIR ESE LIKHO ☺️*\n\n*.IG ❮VIDEO LINK❯*\n\n*JAB AP ESE LIKHO GE 🤗 TO APKI INSTAGRAM KI VIDEO DOWNLOAD KAR KE 😃 YAHA PER BHEJ DE JAYE GE 😍♥️*`,
                 ...newsletterContext
             }, { quoted: verifiedContact });
         }
@@ -77,28 +73,20 @@ async (conn, mek, m, { from, q, reply, sender }) => {
 
         if (!isValidUrl) {
             return await conn.sendMessage(from, {
-                text: `╭──〔 ❌ ɪɴᴠᴀʟɪᴅ ʟɪɴᴋ 〕──
-│
-├─ ᴛʜᴀᴛ ɪs ɴᴏᴛ ᴀ ᴠᴀʟɪᴅ ɪɴsᴛᴀɢʀᴀᴍ ᴘᴏsᴛ, ʀᴇᴇʟ, ᴏʀ ᴛᴠ ʟɪɴᴋ.
-│
-╰──〔 📥 ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴘᴏᴘ ᴋɪᴅs 〕──`,
+                text: `*YEH LINK INSTA KI VIDEO KA NAHI 😢*`,
                 ...newsletterContext
             }, { quoted: verifiedContact });
         }
 
         // React while processing
-        await conn.sendMessage(from, { react: { text: '🔄', key: m.key } });
+        await conn.sendMessage(from, { react: { text: '😃', key: m.key } });
 
         // Download media
         const downloadData = await igdl(text);
 
         if (!downloadData || !downloadData.data || downloadData.data.length === 0) {
             return await conn.sendMessage(from, {
-                text: `╭──〔 ⚠️ ɴᴏ ᴍᴇᴅɪᴀ ꜰᴏᴜɴᴅ 〕──
-│
-├─ ᴛʜᴇʀᴇ ᴡᴀs ɴᴏ ᴍᴇᴅɪᴀ ᴀᴛ ᴛʜᴇ ᴘʀᴏᴠɪᴅᴇᴅ ʟɪɴᴋ.
-│
-╰──〔 📥 ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴘᴏᴘ ᴋɪᴅs 〕──`,
+                text: `APKI INSTAGRAM KI VIDEO NAHI MIL RAHI 😔*`,
                 ...newsletterContext
             }, { quoted: verifiedContact });
         }
@@ -122,7 +110,7 @@ async (conn, mek, m, { from, q, reply, sender }) => {
 ├─ ꜱᴏᴜʀᴄᴇ: ɪɴsᴛᴀɢʀᴀᴍ.ᴄᴏᴍ
 ├─ ꜱᴛᴀᴛᴜs: ✅ ᴄᴏᴍᴘʟᴇᴛᴇ
 │
-╰──〔 📥 ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴘᴏᴘ ᴋɪᴅs 〕──`,
+╰──〔 📥 ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙɪʟᴀʟ-ᴍᴅ 〕──`,
                     ...newsletterContext
                 }, { quoted: verifiedContact });
             } else {
@@ -133,7 +121,7 @@ async (conn, mek, m, { from, q, reply, sender }) => {
 ├─ ꜱᴏᴜʀᴄᴇ: ɪɴsᴛᴀɢʀᴀᴍ.ᴄᴏᴍ
 ├─ ꜱᴛᴀᴛᴜs: ✅ ᴄᴏᴍᴘʟᴇᴛᴇ
 │
-╰──〔 📥 ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴘᴏᴘ ᴋɪᴅs 〕──`,
+╰──〔 📥 ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙɪʟᴀʟ-ᴍᴅ 〕──`,
                     ...newsletterContext
                 }, { quoted: verifiedContact });
             }
@@ -142,11 +130,7 @@ async (conn, mek, m, { from, q, reply, sender }) => {
     } catch (error) {
         console.error('❌ Error in Instagram command:', error);
         await conn.sendMessage(from, {
-            text: `╭──〔 ⚠️ ᴇʀʀᴏʀ ᴏᴄᴄᴜʀʀᴇᴅ 〕──
- │
- ├─ ꜱᴏᴍᴇᴛʜɪɴɢ ᴡᴇɴᴛ ᴡʀᴏɴɢ ᴡʜɪʟᴇ ᴘʀᴏᴄᴇssɪɴɢ ᴛʜᴇ ʟɪɴᴋ.
- │
- ╰──〔 📥 ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴘᴏᴘ ᴋɪᴅs 〕──`,
+            text: `*INSTAGRAM KI VIDEO NAHI MILI SORRY 😔*`,
             ...newsletterContext
         }, { quoted: verifiedContact });
     }
