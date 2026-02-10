@@ -12,7 +12,7 @@ cmd({
 async (conn, mek, m, { from, q, reply }) => {
 
     try {
-        if (!q) return reply("*AP NE KOI APP DOWNLOAD KARNI HAI 🤔*\n TO ESE LIKHO ☺️*\n\n*.APP ❮APP NAME❯*\n\n*JAB AP ESE LIKHO GE 🤗 TO APKI APP DOWNLOAD KAR KE 😃 YAHA PER BHEJ DE JAYE GE 😍♥️*");
+        if (!q) return reply("*AP NE KOI APP DOWNLOAD KARNI HAI 🤔*\n *TO ESE LIKHO ☺️*\n\n*.APP ❮APP NAME❯*\n\n*JAB AP ESE LIKHO GE 🤗 TO APKI APP DOWNLOAD KAR KE 😃 YAHA PER BHEJ DE JAYE GE 😍♥️*");
 
         // ⏳ loading reaction
         await conn.sendMessage(from, {
