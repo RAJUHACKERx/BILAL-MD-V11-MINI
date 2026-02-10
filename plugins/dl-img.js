@@ -5,8 +5,8 @@ const UNSPLASH_API_KEY = "TKwNF_gHeB4Z6ieR6sV_Q8gIkQW_VFOcmiNfD0AX0uM"; // Your 
 
 cmd({
     pattern: "img",
-    alias: ["image", "searchimg"],
-    react: "🫧",
+    alias: ["image", "searchimg", "photo"],
+    react: "🤗",
     desc: "Search and download images from Unsplash",
     category: "fun",
     use: ".img <keywords> [number_of_images]",
@@ -14,7 +14,7 @@ cmd({
 }, async (conn, mek, m, { reply, args, from }) => {
     try {
         if (!args.length) 
-            return reply("🖼️ Please provide a search query\nExample: .img cute cats 3");
+            return reply("*AP NE KOI PHOTO DOWNLOAD KARNI HAI 🤔*\n*TO AP ESE LIKHO ☺️*\n\n*.IMG ❮PHOTO NAME❯*\n\n*JAB AP ESE LIKHO GE 🤗 TO APKI PHOTOS DOWNLOAD KAR KE 😃 YAHA PER BHEJ DE JAYE GE 😍*");
 
         // Determine count of images
         let count = parseInt(args[args.length - 1]);
@@ -22,13 +22,13 @@ cmd({
 
         const query = args.slice(0, isNaN(args[args.length - 1]) ? args.length : -1).join(" ");
 
-        await reply(`🔍 Searching Unsplash for "${query}"...`);
+        await reply(`*DOWNLOADING :❯ "${query}"...*`);
 
         const url = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=${count}&client_id=${UNSPLASH_API_KEY}`;
         const { data } = await axios.get(url);
 
         if (!data.results || !data.results.length) 
-            return reply("❌ No images found. Try different keywords");
+            return reply("*PHOTOS NAHI MIL RAHI SORRY 😔*");
 
         // Randomize results
         const selectedImages = data.results.sort(() => 0.5 - Math.random()).slice(0, count);
@@ -38,7 +38,7 @@ cmd({
                 from,
                 {
                     image: { url: image.urls.regular },
-                    caption: `*📷 Result for*: ${query}\n> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴘᴏᴘᴋɪᴅ*`
+                    caption: `*👑 BY :❯ BILAL-MD 👑*`
                 },
                 { quoted: mek }
             );
