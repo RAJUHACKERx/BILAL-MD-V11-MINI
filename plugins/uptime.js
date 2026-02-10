@@ -6,7 +6,7 @@ cmd({
     alias: ["runtime", "status"],
     desc: "Live uptime monitor",
     category: "main",
-    react: "⏳",
+    react: "👑",
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
 
@@ -14,7 +14,7 @@ cmd({
 
         // start reaction
         await conn.sendMessage(from, {
-            react: { text: "⏳", key: m.key }
+            react: { text: "👑", key: m.key }
         });
 
         // initial message
@@ -42,7 +42,7 @@ cmd({
                     key: msg.key,
                     type: 14,
                     editedMessage: {
-                        conversation: `🕒 *LIVE UPTIME:* ${uptime}`
+                        conversation: `*👑 UPTIME:❯ * ${uptime} 👑*`
                     }
                 }
             }, {});
@@ -52,7 +52,7 @@ cmd({
 
         // end reaction
         await conn.sendMessage(from, {
-            react: { text: "✅", key: m.key }
+            react: { text: "😍", key: m.key }
         });
 
     } catch (e) {
