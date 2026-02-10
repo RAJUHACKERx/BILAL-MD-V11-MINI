@@ -19,7 +19,7 @@ cmd({
 
         // initial message
         const msg = await conn.sendMessage(from, {
-            text: "*Checking uptime…*"
+            text: "*TESTING....☺️*"
         }, { quoted: mek });
 
         await sleep(2000);
