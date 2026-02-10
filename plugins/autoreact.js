@@ -13,11 +13,11 @@ cmd({
 },    
 async (conn, mek, m, { from, args, isCreator, reply }) => {
     try {
-        if (!isCreator) return reply("*📛 Only the owner can use this command!*");
+        if (!isCreator) return reply("*YEH COMMAND SIRF MERE LIE HAI 😎*");
 
         const status = args[0]?.toLowerCase();
         if (!["on", "off"].includes(status)) {
-            return reply("*🫟 Example: .auto-react on*");
+            return reply("*ESE LIKHO :❯ .AUTOREACT ON YA OFF*");
         }
 
         const newValue = status === "on" ? "true" : "false";
@@ -33,7 +33,7 @@ async (conn, mek, m, { from, args, isCreator, reply }) => {
 
         fs.writeFileSync(envFile, envContent.trim() + "\n");
 
-        await reply(`✅ *Auto-react feature has been turned ${status.toUpperCase()}.*`);
+        await reply(`AUTOREACT AB ${status.toUpperCase()} HAI ☺️*`);
 
     } catch (e) {
         console.error(e);
