@@ -6,12 +6,12 @@ const moment = require('moment-timezone');
 const { cmd, commands } = require('../command');
 
 // --- PRE-LOAD IMAGE TO STOP LAG ---
-const menuImagePath = path.resolve('./popkid/menu.jpg');
+const menuImagePath = path.resolve('./bilal/menu.jpg');
 let menuImageBuffer = null;
 try {
     menuImageBuffer = fs.readFileSync(menuImagePath);
 } catch (e) {
-    console.log("Menu image not found, will send text only.");
+    console.log("BILAL-MD PIC NAHI MILI IS LIE JUST MENU TEXT SEND HO RAHA HAI");
 }
 
 // Helpers
@@ -30,14 +30,14 @@ const formatUptime = (seconds) => {
 
 cmd({
     pattern: 'menu',
-    alias: ['help', 'allmenu'],
-    react: '✅',
+    alias: ['help', 'allmenu', "m", "list"],
+    react: '👑',
     category: 'main',
     filename: __filename,
     desc: 'Show optimized main menu'
 }, async (conn, mek, m, { from, sender, pushName, reply }) => {
     try {
-        const timeZone = 'Africa/Nairobi';
+        const timeZone = 'Asia/Karachi';
         const time = moment.tz(timeZone).format('hh:mm:ss A');
         const date = moment.tz(timeZone).format('DD/MM/YYYY');
         const uptime = formatUptime(process.uptime());
@@ -58,27 +58,27 @@ cmd({
         });
 
         // Construct Menu String
-        let menu = `╭══〘 *${monospace(config.BOT_NAME || 'POP KID-MD')}* 〙══⊷
-┃❍ *Mode:* ${monospace(mode)}
-┃❍ *User:* ${monospace(userName)}
-┃❍ *Plugins:* ${monospace(totalCommands)}
-┃❍ *Uptime:* ${monospace(uptime)}
-┃❍ *Date:* ${monospace(date)}
-┃❍ *RAM:* ${monospace(ram)}
-┃❍ *Ping:* ${monospace(Math.floor(Math.random() * 50) + 10 + 'ms')}
+        let menu = `╭══〘 👑 BILAL-MD 👑 〙══⊷*
+*┃👑 MODE :❯ ${monospace(mode)}*
+*┃👑 USER :❯ ${monospace(userName)}*
+*┃👑 PLUGINS :❯ ${monospace(totalCommands)}*
+*┃👑 UPTIME :❯ ${monospace(uptime)}*
+*┃👑 DATE :❯ ${monospace(date)}*
+*┃👑 URAM :❯ ${monospace(ram)}*
+*┃👑 SPEED :❯ ${monospace(Math.floor(Math.random() * 50) + 10 + 'MS')}*
 ╰═════════════════⊷
 
 *Command List ⤵*`;
 
         for (const category in commandsByCategory) {
-            menu += `\n\n╭━━━━❮ *${monospace(category)}* ❯━⊷\n`;
+            menu += `\n\n*╭━━━━❮ 👑 ${monospace(category)} 👑 ❯━⊷*\n`;
             commandsByCategory[category].sort().forEach(cmdName => {
-                menu += `┃✞︎ ${monospace(config.PREFIX + cmdName)}\n`;
+                menu += `*┃👑 ${monospace(config.PREFIX + cmdName)}*\n`;
             });
-            menu += `╰━━━━━━━━━━━━━━━━━⊷`;
+            menu += `*╰━━━━━━━━━━━━━━━━━⊷*`;
         }
 
-        menu += `\n\n> *${config.BOT_NAME || 'POP KID-MD'}* © 2026 🇰🇪`;
+        menu += `\n\n> *URDU LANGUAGE BOT 😘`;
 
         // Efficient Send
         await conn.sendMessage(from, {
@@ -88,10 +88,10 @@ cmd({
                 mentionedJid: [sender],
                 forwardingScore: 1,
                 externalAdReply: {
-                    title: 'POP KID-MD V2 ADVANCED',
-                    body: 'POPKID TECH',
+                    title: 'PROUD TO PAKISTAN 🇵🇰',
+                    body: 'BY BILAL',
                     thumbnail: menuImageBuffer,
-                    sourceUrl: 'https://whatsapp.com/channel/0029VacgxK96hENmSRMRxx1r',
+                    sourceUrl: 'https://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G',
                     mediaType: 1,
                     renderLargerThumbnail: true
                 }
@@ -100,6 +100,6 @@ cmd({
 
     } catch (e) {
         console.error(e);
-        reply('❌ Menu processing error.');
+        reply('MENU SHOW NAHI HO RAHA BILAL SIR MENU ERROR FIX KR DE GE ISKO 😊');
     }
 });
