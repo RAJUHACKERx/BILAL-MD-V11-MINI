@@ -11,8 +11,8 @@ cmd({
     try {
         if (!args[0]) {
             return reply(
-                "❌ Give me a song name or YouTube link!\n\n" +
-                "Example:\n.song faded\n.song https://youtu.be/xxxx"
+                "*AP NE KOI YOUTUBE AUDIO DOWNLOAD KARNA HAI 🤔*\n*TO AP ESE LIKHO 😊*\n\n*.AUDIO ❮AUDIO NAME❯* \n\n*JAB AP ESE LIKHO GE 🤗 TO APKI YOUTUBE AUDIO DOWNLOAD KAR KE 😃 YAHA PER BHEJ DE JAYE GA 😍♥️*\n\n" +
+                "*👑 BILAL-MD WHATSAPP BOT 👑*"
             );
         }
 
@@ -20,7 +20,7 @@ cmd({
         const start = Date.now();
 
         await conn.sendMessage(from, {
-            react: { text: "🎵", key: mek.key }
+            react: { text: "🤗", key: mek.key }
         });
 
         let videoUrl = query;
@@ -37,7 +37,7 @@ cmd({
                 !searchRes.data.results ||
                 searchRes.data.results.length === 0) {
 
-                return reply("❌ No results found.");
+                return reply("*APKA AUDIO NAHI MIL RAHA 😔*.");
             }
 
             videoUrl = searchRes.data.results[0].url;
@@ -50,7 +50,7 @@ cmd({
         const { data } = await axios.get(apiUrl);
 
         if (!data.status || !data.result?.mp3) {
-            return reply("❌ Failed to fetch audio.");
+            return reply("*APKA AUDIO NAHI MILA 😔*");
         }
 
         const title = data.result.title || "YouTube Audio";
@@ -59,10 +59,10 @@ cmd({
         const speed = Date.now() - start;
 
         await reply(
-            `🎵 *YouTube Audio Downloader*\n\n` +
-            `📌 *Title:* ${title}\n` +
-            `⚡ *Speed:* ${speed} ms\n\n` +
-            `⬇️ Sending audio...`
+            `*👑 YT AUDIO INFO 👑*\n\n` +
+            `*👑 AUDIO NAME 👑*\n ${title}\n` +
+            `*👑 DOWNLOADING....*\n\n` +
+            `*👑 BY :❯ BILAL-MD 👑*`
         );
 
         await conn.sendMessage(from, {
@@ -73,6 +73,6 @@ cmd({
 
     } catch (err) {
         console.error(err);
-        reply("❌ Error while processing audio request.");
+        reply("*APKA AUDIO NAHI MIL RAHA SORRY 😔*");
     }
 });
