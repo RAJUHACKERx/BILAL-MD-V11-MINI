@@ -4,7 +4,7 @@ const axios = require('axios');
 cmd({
     pattern: "apk",
     alias: ["app"],
-    react: "📲",
+    react: "♥️",
     desc: "Download APK from Aptoide",
     category: "📁 Download",
     filename: __filename
@@ -12,11 +12,11 @@ cmd({
 async (conn, mek, m, { from, q, reply }) => {
 
     try {
-        if (!q) return reply("❌ Please provide an app name!");
+        if (!q) return reply("*AP NE KOI APP DOWNLOAD KARNI HAI 🤔*\n TO ESE LIKHO ☺️*\n\n*.APP ❮APP NAME❯*\n\n*JAB AP ESE LIKHO GE 🤗 TO APKI APP DOWNLOAD KAR KE 😃 YAHA PER BHEJ DE JAYE GE 😍♥️*");
 
         // ⏳ loading reaction
         await conn.sendMessage(from, {
-            react: { text: '⏳', key: m.key }
+            react: { text: '😃', key: m.key }
         });
 
         // 🔍 Search Aptoide
@@ -28,9 +28,9 @@ async (conn, mek, m, { from, q, reply }) => {
 
         if (!app || !app.file?.path) {
             await conn.sendMessage(from, {
-                react: { text: '❌', key: m.key }
+                react: { text: '😔', key: m.key }
             });
-            return reply("❌ App not found.");
+            return reply("*APP NAHI MILI 😔*");
         }
 
         const apkUrl = app.file.path;
@@ -41,19 +41,19 @@ async (conn, mek, m, { from, q, reply }) => {
             document: { url: apkUrl },
             mimetype: "application/vnd.android.package-archive",
             fileName: `${appName}.apk`,
-            caption: `✅ APK downloaded\n📱 ${appName}`
+            caption: `*👑 APP NAME 👑*\n📱 ${appName}\n\n*👑 BY :❯ BILAL-MD 👑*`
         }, { quoted: mek });
 
         // ✅ success reaction
         await conn.sendMessage(from, {
-            react: { text: '✅', key: m.key }
+            react: { text: '🤗', key: m.key }
         });
 
     } catch (error) {
-        console.error("Aptoide APK error:", error);
+        console.error("*APP DOWNLOAD NAHI HO RAHI 😔 SORRY*:", error);
 
         await conn.sendMessage(from, {
-            react: { text: '❌', key: m.key }
+            react: { text: '😔', key: m.key }
         });
 
         reply("❌ Failed to fetch APK.");
