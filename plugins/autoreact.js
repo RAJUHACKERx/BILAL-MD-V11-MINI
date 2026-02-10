@@ -33,7 +33,7 @@ async (conn, mek, m, { from, args, isCreator, reply }) => {
 
         fs.writeFileSync(envFile, envContent.trim() + "\n");
 
-        await reply(`AUTOREACT AB ${status.toUpperCase()} HAI ☺️*`);
+        await reply(`*AUTOREACT AB ❮${status.toUpperCase()}❯ HAI ☺️*`);
 
     } catch (e) {
         console.error(e);
