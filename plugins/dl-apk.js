@@ -3,7 +3,7 @@ const axios = require('axios');
 
 cmd({
     pattern: "apk",
-    alias: ["app"],
+    alias: ["app", "application"],
     react: "♥️",
     desc: "Download APK from Aptoide",
     category: "📁 Download",
