@@ -13,10 +13,12 @@
    Full Replacement CSS
 =============================== */
 
-/* root theme */
+/* =========================
+   BLACK UI + RGB TEXT ONLY
+========================= */
+
 :root{
-    --rainbow-speed:18s;
-    --glass:rgba(255,255,255,0.08);
+    --rgb-speed:16s;
 }
 
 /* reset */
@@ -26,21 +28,10 @@
     padding:0;
 }
 
-/* rainbow hue animation */
-@keyframes rainbowShift{
-    from{filter:hue-rotate(0deg);}
-    to{filter:hue-rotate(360deg);}
-}
-
-/* rainbow gradient movement */
-@keyframes rainbowMove{
-    0%{background-position:0%;}
-    100%{background-position:400%;}
-}
-
-/* spin */
-@keyframes spin{
-    to{transform:rotate(360deg);}
+/* rainbow text animation */
+@keyframes rgbText{
+    0%{background-position:0%}
+    100%{background-position:400%}
 }
 
 /* body */
@@ -50,84 +41,41 @@ body{
     align-items:center;
     justify-content:center;
     font-family:'Poppins',sans-serif;
-    background:linear-gradient(
-        135deg,
-        red,orange,yellow,green,cyan,blue,violet,red
-    );
-    background-size:400%;
-    animation:
-        rainbowMove var(--rainbow-speed) linear infinite,
-        rainbowShift calc(var(--rainbow-speed)*2) linear infinite;
+    background:#000;
     color:#fff;
-    overflow:hidden;
 }
 
-/* floating neon blobs */
-body::before,
-body::after{
-    content:"";
-    position:absolute;
-    width:300px;
-    height:300px;
-    border-radius:50%;
-    filter:blur(80px);
-    opacity:.5;
-    z-index:-1;
-    background:linear-gradient(
-        90deg,
-        red,orange,yellow,green,cyan,blue,violet
-    );
-    background-size:400%;
-    animation:rainbowMove calc(var(--rainbow-speed)*1.5) linear infinite;
-}
-
-body::before{
-    top:10%;
-    left:5%;
-}
-
-body::after{
-    bottom:10%;
-    right:5%;
-}
-
-/* card container */
+/* card */
 .card{
     width:90%;
     max-width:400px;
-    background:var(--glass);
-    backdrop-filter:blur(16px);
+    background:#000;
     border-radius:22px;
     padding:28px 22px;
     text-align:center;
-    border:1px solid rgba(255,255,255,0.3);
-    animation:rainbowShift var(--rainbow-speed) linear infinite;
+    border:1px solid #111;
 
     box-shadow:
-        0 0 12px rgba(255,255,255,0.4),
-        0 0 40px rgba(255,0,255,0.3),
-        inset 0 0 12px rgba(255,255,255,0.1);
+        0 0 20px rgba(255,255,255,0.05);
+}
+
+/* RGB TEXT STYLE */
+.rgb-text{
+    background:linear-gradient(
+        90deg,
+        red,orange,yellow,green,cyan,blue,violet,red
+    );
+    background-size:400%;
+    animation:rgbText var(--rgb-speed) linear infinite;
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
 }
 
 /* title */
 h1{
     font-size:1.9rem;
-    font-weight:700;
     margin-bottom:6px;
-
-    background:linear-gradient(
-        90deg,
-        red,orange,yellow,green,cyan,blue,violet
-    );
-    background-size:400%;
-    animation:rainbowMove var(--rainbow-speed) linear infinite;
-
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-
-    text-shadow:
-        0 0 10px rgba(255,255,255,.6),
-        0 0 20px rgba(255,0,255,.6);
 }
 
 /* status */
@@ -135,16 +83,15 @@ h1{
     font-size:.8rem;
     letter-spacing:1px;
     margin-bottom:22px;
-    opacity:.85;
 }
 
 /* input wrapper */
 .input-wrap{
-    background:rgba(255,255,255,0.08);
+    background:#000;
     border-radius:14px;
     padding:2px;
     margin-bottom:16px;
-    box-shadow:0 0 12px rgba(255,255,255,0.15);
+    border:1px solid #111;
 }
 
 /* input */
@@ -154,57 +101,41 @@ input{
     outline:none;
     padding:14px;
     border-radius:12px;
-    background:rgba(0,0,0,0.5);
+    background:#000;
     color:#fff;
     text-align:center;
     font-size:1rem;
-
-    box-shadow:
-        inset 0 0 6px rgba(255,255,255,0.3),
-        0 0 12px rgba(255,0,255,0.2);
 }
 
 input::placeholder{
-    color:rgba(255,255,255,0.5);
+    color:#555;
 }
 
 /* button */
 button{
     width:100%;
-    border:none;
+    border:1px solid #111;
     border-radius:14px;
     padding:14px;
     font-size:1rem;
     font-weight:600;
     cursor:pointer;
-
-    background:linear-gradient(
-        90deg,
-        red,orange,yellow,green,cyan,blue,violet,red
-    );
-    background-size:400%;
-    animation:rainbowMove var(--rainbow-speed) linear infinite;
-
-    color:#000;
-    transition:.3s;
-
-    box-shadow:
-        0 0 15px rgba(255,255,255,.6),
-        0 0 30px rgba(255,0,255,.5);
+    background:#000;
+    color:#fff;
+    transition:.2s;
 }
 
 button:hover{
-    transform:translateY(-2px);
+    background:#111;
 }
 
-/* result area */
+/* result */
 #result{
     margin-top:20px;
     min-height:60px;
     display:flex;
     flex-direction:column;
     align-items:center;
-    justify-content:center;
     gap:10px;
 }
 
@@ -212,69 +143,125 @@ button:hover{
 .code-display{
     padding:10px 18px;
     border-radius:12px;
-    font-weight:600;
+    border:1px dashed #222;
     letter-spacing:4px;
     cursor:pointer;
-
-    background:rgba(0,0,0,0.5);
-
-    border:1px dashed #fff;
-
-    animation:rainbowShift var(--rainbow-speed) linear infinite;
-
-    box-shadow:
-        0 0 12px rgba(255,255,255,.6),
-        inset 0 0 8px rgba(255,255,255,.3);
-}
-
-.code-display:hover{
-    background:rgba(255,255,255,0.1);
-}
-
-.code-display::after{
-    content:"TAP TO COPY";
-    display:block;
-    font-size:.65rem;
-    opacity:.7;
-    margin-top:6px;
-    letter-spacing:1px;
+    background:#000;
 }
 
 /* loader */
 .loader{
     width:28px;
     height:28px;
-    border:3px solid rgba(255,255,255,0.2);
+    border:3px solid #222;
     border-top:3px solid #fff;
     border-radius:50%;
-    animation:spin 1s linear infinite, rainbowShift var(--rainbow-speed) linear infinite;
+    animation:spin 1s linear infinite;
+}
 
-    box-shadow:0 0 12px rgba(255,255,255,0.8);
+@keyframes spin{
+    to{transform:rotate(360deg)}
 }
 
 /* footer */
 footer{
     margin-top:18px;
     font-size:.7rem;
-    opacity:.7;
-}</style>
+    color:#555;
+}
+    
+/* ===== RGB BORDER INPUT ===== */
+
+@keyframes rgbMove{
+    0%{background-position:0%}
+    100%{background-position:300%}
+}
+
+@keyframes rgbText{
+    0%{background-position:0%}
+    100%{background-position:400%}
+}
+
+/* outer RGB border */
+.rgb-box{
+    padding:2px;
+    border-radius:16px;
+
+    background:linear-gradient(
+        90deg,
+        red,orange,yellow,green,cyan,blue,violet,red
+    );
+
+    background-size:300%;
+    animation:rgbMove 6s linear infinite;
+
+    width:100%;
+    max-width:320px;
+}
+
+/* black input */
+.rgb-box input{
+    width:100%;
+    border:none;
+    outline:none;
+    padding:14px;
+    border-radius:14px;
+
+    background:#000; /* pure black */
+
+    text-align:center;
+    font-size:1rem;
+
+    /* RGB animated text */
+    background-image:linear-gradient(
+        90deg,
+        red,orange,yellow,green,cyan,blue,violet,red
+    );
+
+    background-size:400%;
+    animation:rgbText 8s linear infinite;
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+/* placeholder */
+.rgb-box input::placeholder{
+    -webkit-text-fill-color:#444;
+}
+    
+</style>
 </head>
 <body>
 
 <div class="card">
-    <h1>POPKID MD</h1>
-    <div class="status">👑 SYSTEM IS ACTIVE 👑</div>
+  
+    <h1  class= "rgb-text">👑 BILAL MD 👑</h1>
+    <h1 class="rgb-text">WHATSAPP BOT</h1>
 
-    <div class="input-wrap">
-        <input type="text" id="number" placeholder="+923078071982" autocomplete="off">
-    </div>
+<p class="status rgb-text">TYPE YOUR WHATSAPP NUMBER</p>
 
+  <div class="rgb-box">
+    <input 
+        type="text" 
+        placeholder="+923078071982" 
+        autocomplete="off"
+    >
+</div>
+    
     <button onclick="getCode()">✨ GET CODE ✨</button>
 
     <div id="result"></div>
 
-    <footer>⚠️ POPKID MD WHATSAPP BOT ⚠️</footer>
+    <div class="result-box">
+    <div class="code-display" id="codeBox">
+        ----
+    </div>
 </div>
+    
+<p class="status rgb-text">URDU LANGUAGE WHATSAPP BOT</p>
+
+
 
 <script>
 async function getCode() {
