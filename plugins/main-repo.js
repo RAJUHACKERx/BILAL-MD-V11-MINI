@@ -16,7 +16,7 @@ cmd({
     filename: __filename,
 },
 async (conn, mek, m, { from, reply }) => {
-    const githubRepoURL = 'https://github.com/BilalTech05';
+    const githubRepoURL = 'https://github.com/BilalTech05/BILAL-MD';
 
     try {
         // Extract username and repo name from the URL
@@ -60,7 +60,7 @@ ${repoData.description || '*PROUD TO PAKISTAN 🇵🇰*'}
 
         // Send an image with the formatted info as a caption
         await conn.sendMessage(from, {
-            image: { url: `https://files.catbox.moe/kiy0hl.jpg` }, // Replace with your image URL
+            image: { url: `https://i.postimg.cc/7LWBgYMq/bilal.jpg` }, // Replace with your image URL
             caption: formattedInfo,
             contextInfo: { 
                 mentionedJid: [m.sender],
@@ -68,7 +68,7 @@ ${repoData.description || '*PROUD TO PAKISTAN 🇵🇰*'}
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
                     newsletterJid: '120363289379419860@newsletter',
-                    newsletterName: 'popkid xtr',
+                    newsletterName: 'PROUD TO PAKISTAN 🇵🇰',
                     serverMessageId: 143
                 }
             }
