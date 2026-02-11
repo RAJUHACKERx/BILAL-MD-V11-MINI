@@ -8,95 +8,167 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
+/* ===============================
+   RGB NEON RAINBOW EDITION
+   Full Replacement CSS
+=============================== */
+
+/* root theme */
 :root{
-    --bg1:#0f1020;
-    --bg2:#1a1b2e;
-    --accent:#7aa2ff;
-    --accent2:#c77dff;
-    --soft:#9be7ff;
-    --danger:#ff7a7a;
-    --success:#7aff9a;
+    --rainbow-speed:18s;
     --glass:rgba(255,255,255,0.08);
 }
 
-*{box-sizing:border-box;margin:0;padding:0}
+/* reset */
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
 
+/* rainbow hue animation */
+@keyframes rainbowShift{
+    from{filter:hue-rotate(0deg);}
+    to{filter:hue-rotate(360deg);}
+}
+
+/* rainbow gradient movement */
+@keyframes rainbowMove{
+    0%{background-position:0%;}
+    100%{background-position:400%;}
+}
+
+/* spin */
+@keyframes spin{
+    to{transform:rotate(360deg);}
+}
+
+/* body */
 body{
     min-height:100vh;
     display:flex;
     align-items:center;
     justify-content:center;
     font-family:'Poppins',sans-serif;
-    background:linear-gradient(135deg,var(--bg1),var(--bg2));
+    background:linear-gradient(
+        135deg,
+        red,orange,yellow,green,cyan,blue,violet,red
+    );
+    background-size:400%;
+    animation:
+        rainbowMove var(--rainbow-speed) linear infinite,
+        rainbowShift calc(var(--rainbow-speed)*2) linear infinite;
     color:#fff;
     overflow:hidden;
 }
 
-/* soft floating blobs */
-body::before, body::after{
+/* floating neon blobs */
+body::before,
+body::after{
     content:"";
     position:absolute;
-    width:300px;height:300px;
+    width:300px;
+    height:300px;
     border-radius:50%;
     filter:blur(80px);
-    opacity:.4;
+    opacity:.5;
     z-index:-1;
+    background:linear-gradient(
+        90deg,
+        red,orange,yellow,green,cyan,blue,violet
+    );
+    background-size:400%;
+    animation:rainbowMove calc(var(--rainbow-speed)*1.5) linear infinite;
 }
-body::before{background:var(--accent); top:10%; left:5%;}
-body::after{background:var(--accent2); bottom:10%; right:5%;}
 
+body::before{
+    top:10%;
+    left:5%;
+}
+
+body::after{
+    bottom:10%;
+    right:5%;
+}
+
+/* card container */
 .card{
     width:90%;
     max-width:400px;
     background:var(--glass);
-    backdrop-filter:blur(14px);
+    backdrop-filter:blur(16px);
     border-radius:22px;
     padding:28px 22px;
-    box-shadow:0 20px 40px rgba(0,0,0,.4);
     text-align:center;
-    border:1px solid rgba(255,255,255,0.15);
-    position:relative;
+    border:1px solid rgba(255,255,255,0.3);
+    animation:rainbowShift var(--rainbow-speed) linear infinite;
+
+    box-shadow:
+        0 0 12px rgba(255,255,255,0.4),
+        0 0 40px rgba(255,0,255,0.3),
+        inset 0 0 12px rgba(255,255,255,0.1);
 }
 
+/* title */
 h1{
     font-size:1.9rem;
     font-weight:700;
     margin-bottom:6px;
-    background:linear-gradient(90deg,var(--soft),var(--accent2));
+
+    background:linear-gradient(
+        90deg,
+        red,orange,yellow,green,cyan,blue,violet
+    );
+    background-size:400%;
+    animation:rainbowMove var(--rainbow-speed) linear infinite;
+
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
+
+    text-shadow:
+        0 0 10px rgba(255,255,255,.6),
+        0 0 20px rgba(255,0,255,.6);
 }
 
+/* status */
 .status{
     font-size:.8rem;
     letter-spacing:1px;
-    color:#cfd3ff;
     margin-bottom:22px;
+    opacity:.85;
 }
 
+/* input wrapper */
 .input-wrap{
-    background:rgba(255,255,255,0.06);
+    background:rgba(255,255,255,0.08);
     border-radius:14px;
     padding:2px;
     margin-bottom:16px;
+    box-shadow:0 0 12px rgba(255,255,255,0.15);
 }
 
+/* input */
 input{
     width:100%;
     border:none;
     outline:none;
     padding:14px;
     border-radius:12px;
-    background:rgba(0,0,0,0.4);
+    background:rgba(0,0,0,0.5);
     color:#fff;
     text-align:center;
     font-size:1rem;
+
+    box-shadow:
+        inset 0 0 6px rgba(255,255,255,0.3),
+        0 0 12px rgba(255,0,255,0.2);
 }
 
 input::placeholder{
     color:rgba(255,255,255,0.5);
 }
 
+/* button */
 button{
     width:100%;
     border:none;
@@ -105,16 +177,27 @@ button{
     font-size:1rem;
     font-weight:600;
     cursor:pointer;
-    background:linear-gradient(90deg,var(--accent),var(--accent2));
+
+    background:linear-gradient(
+        90deg,
+        red,orange,yellow,green,cyan,blue,violet,red
+    );
+    background-size:400%;
+    animation:rainbowMove var(--rainbow-speed) linear infinite;
+
     color:#000;
     transition:.3s;
+
+    box-shadow:
+        0 0 15px rgba(255,255,255,.6),
+        0 0 30px rgba(255,0,255,.5);
 }
 
 button:hover{
-    transform:translateY(-1px);
-    box-shadow:0 8px 20px rgba(124,162,255,.4);
+    transform:translateY(-2px);
 }
 
+/* result area */
 #result{
     margin-top:20px;
     min-height:60px;
@@ -123,54 +206,58 @@ button:hover{
     align-items:center;
     justify-content:center;
     gap:10px;
-    text-align:center;
 }
 
+/* code display */
 .code-display{
     padding:10px 18px;
     border-radius:12px;
-    border:1px dashed var(--soft);
-    color:var(--soft);
     font-weight:600;
     letter-spacing:4px;
     cursor:pointer;
-    transition:.2s;
-    position:relative;
+
+    background:rgba(0,0,0,0.5);
+
+    border:1px dashed #fff;
+
+    animation:rainbowShift var(--rainbow-speed) linear infinite;
+
+    box-shadow:
+        0 0 12px rgba(255,255,255,.6),
+        inset 0 0 8px rgba(255,255,255,.3);
 }
 
 .code-display:hover{
-    background:rgba(155,231,255,0.1);
+    background:rgba(255,255,255,0.1);
 }
 
 .code-display::after{
     content:"TAP TO COPY";
     display:block;
     font-size:.65rem;
-    opacity:.6;
+    opacity:.7;
     margin-top:6px;
     letter-spacing:1px;
 }
 
+/* loader */
 .loader{
     width:28px;
     height:28px;
     border:3px solid rgba(255,255,255,0.2);
-    border-top:3px solid var(--soft);
+    border-top:3px solid #fff;
     border-radius:50%;
-    animation:spin 1s linear infinite;
+    animation:spin 1s linear infinite, rainbowShift var(--rainbow-speed) linear infinite;
+
+    box-shadow:0 0 12px rgba(255,255,255,0.8);
 }
 
-@keyframes spin{
-    to{transform:rotate(360deg)}
-}
-
+/* footer */
 footer{
     margin-top:18px;
     font-size:.7rem;
-    color:rgba(255,255,255,0.5);
-    letter-spacing:1px;
-}
-</style>
+    opacity:.7;
+}</style>
 </head>
 <body>
 
