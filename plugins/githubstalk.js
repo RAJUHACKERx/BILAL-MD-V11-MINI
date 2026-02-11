@@ -2,7 +2,7 @@ const { cmd } = require('../command');
 const axios = require('axios');
 
 cmd({
-    pattern: "githubstalk2",
+    pattern: "gitinfo2",
     alias: ["github2", "ghstalk", "gitstalk"],
     desc: "Stalk a GitHub user profile",
     category: "search",
@@ -14,15 +14,16 @@ cmd({
         if (!q) {
             return await conn.sendMessage(from, {
                 text:
-`🌸 *GitHub Stalk* 🌸
+`*👑 GITHUB OWNER INFO 👑*
 
-✿ Username required  
-✿ Example: *.githubstalk popkidmd*`
+*GITHUB KA USER NAME LIKHE  🤗
+*ESE LIKHO 🤗*
+*.GITINFO2 ❮GITHUB USERNAME❯*`
             }, { quoted: mek });
         }
 
         await conn.sendMessage(from, {
-            text: `🌼 Fetching GitHub profile…`
+            text: `*OWNER DATA DHUNDA JA RAHA HAI....🤗*`
         }, { quoted: mek });
 
         const apiUrl = `https://apis.davidcyriltech.my.id/githubStalk?user=${encodeURIComponent(q)}`;
