@@ -47,6 +47,7 @@ const moment = require('moment-timezone');
 const prefix = config.PREFIX;
 const mode = config.MODE;
 const router = express.Router();
+const MAX_LIMIT = 5;
 
 
 // ==============================================================================
