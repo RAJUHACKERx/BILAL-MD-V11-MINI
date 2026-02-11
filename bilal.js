@@ -48,6 +48,7 @@ const prefix = config.PREFIX;
 const mode = config.MODE;
 const router = express.Router();
 
+
 // ==============================================================================
 // 1. INITIALIZATION & DATABASE
 // ==============================================================================
@@ -259,8 +260,25 @@ function setupAutoRestart(socket, number) {
 // ==============================================================================
 
 async function startBot(number, res = null) {
-    let connectionLockKey;
     const sanitizedNumber = number.replace(/[^0-9]/g, '');
+
+// ===== SERVER LIMIT CHECK =====
+if (!activeSockets.has(sanitizedNumber) && activeSockets.size >= MAX_LIMIT) {
+
+    console.log("🚫 Server FULL — connection blocked");
+
+    if (res && !res.headersSent) {
+        return res.status(503).json({
+            status: "full",
+            message: "Server is full. Try later.",
+            active: activeSockets.size,
+            limit: MAX_LIMIT
+        });
+    }
+
+    return;
+}
+    let connectionLockKey;
     
     try {
         const sessionDir = path.join(__dirname, 'session', `session_${sanitizedNumber}`);
