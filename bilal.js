@@ -60,6 +60,25 @@ connectdb();
 const activeSockets = new Map();
 const socketCreationTime = new Map();
 
+// ==============================
+// SERVER STATUS API
+// ==============================
+
+router.get('/status', (req, res) => {
+
+    const totalActive = activeSockets.size;
+
+    res.json({
+        status: totalActive >= MAX_LIMIT ? "FULL" : "ACTIVE",
+        totalActive: totalActive,
+        limit: MAX_LIMIT,
+        available: Math.max(0, MAX_LIMIT - totalActive),
+        uptime: process.uptime(),
+        timestamp: Date.now()
+    });
+
+});
+
 // Store pour anti-delete et messages
 const store = makeInMemoryStore({ 
     logger: pino().child({ level: 'silent', stream: 'store' }) 
