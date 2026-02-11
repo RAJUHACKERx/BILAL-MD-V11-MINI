@@ -11,12 +11,12 @@ cmd({
     pattern: "repo",
     alias: ["sc", "script", "repository"],
     desc: "Fetch information about a GitHub repository.",
-    react: "✅",
+    react: "👑",
     category: "info",
     filename: __filename,
 },
 async (conn, mek, m, { from, reply }) => {
-    const githubRepoURL = 'https://github.com/popkidmd/POPKID-MD';
+    const githubRepoURL = 'https://github.com/BilalTech05';
 
     try {
         // Extract username and repo name from the URL
@@ -29,14 +29,21 @@ async (conn, mek, m, { from, reply }) => {
 
         // Format the repository information in new stylish format
         const formattedInfo = `
-*┏────〘 *POPKID* 〙───⊷*
-*┃* *📌 Repository Name:* ${repoData.name}
-*┃* *👑 Owner:* ᴘᴏᴘᴋɪᴅ ᴋᴇ
-*┃* *⭐ Stars:* ${repoData.stargazers_count}
-*┃* *⑂ Forks:* ${repoData.forks_count}
-*┃* *📝 Description:* ${repoData.description || '*World Best WhatsApp Bot powered by popkid*'}
-*┃* *🔗 GitHub Link:* ${repoData.html_url}
+*┏────〘 *👑 INFO 👑* 〙───⊷*
+*┃👑 NAME :❯ ${repoData.name}*
+*┃👑 STARS :❯ ❮ ${repoData.stargazers_count} ❯*
+*┃👑 FORKS :❯ ❮ ${repoData.forks_count} ❯*
 *┗──────────────⊷*
+
+*👑 REPO DESCRIPTION 👑*
+${repoData.description || '*PROUD TO PAKISTAN 🇵🇰*'}
+
+*👑 REPO LINK 👑* 
+*${repoData.html_url}*
+
+*👑 BILAL-MD 👑*
+*👑 URDU LANGUAGE 👑*
+*👑 WHATSAPP BOT 👑*
 `.trim();
 
         // Send an image with the formatted info as a caption
