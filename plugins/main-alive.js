@@ -8,7 +8,7 @@ cmd({
     alias: ["status", "live"],
     desc: "Check uptime and system status",
     category: "main",
-    react: "🟢",
+    react: "👑",
     filename: __filename
 },
 async (conn, mek, m, { from, sender, reply }) => {
@@ -22,15 +22,17 @@ async (conn, mek, m, { from, sender, reply }) => {
             return `${h}h ${m}m ${s}s`;
         };
 
-        const status = `*┏────〘 ᴘᴏᴘᴋɪᴅ 〙───⊷*
-*┃* *🌐 Platform:* Heroku
-*┃* *📦 Mode:* ${config.MODE || 'private'}
-*┃* *👑 Owner:* ${config.OWNER_NAME || 'ᴘᴏᴘᴋɪᴅ'}
-*┃* *🔹 Prefix:* ${config.PREFIX || '.'}
-*┃* *🧩 Version:* 1.0.0 Beta
-*┃* *📁 Total Commands:* ${totalCmds}
-*┃* *⏱ Runtime:* ${uptime()}
-*┗──────────────⊷*`;
+        const status = `
+        *I AM ALIVE NOW 🤗♥️*
+*┏────〘 INFO 〙───⊷*
+*┃👑 MODE :❯ ${config.MODE || 'private'}*
+*┃👑 USER :❯ ${config.OWNER_NAME || 'BILAL'}*
+*┃👑 PREFIX :❯ ❮ ${config.PREFIX || '.'} ❯*
+*┃👑 VERSION :❯ 1.0.0*
+*┃👑 TOTAL CMNDS :❯ ❮ ${totalCmds} ❯*
+*┃👑 UPTIME :❯ ${uptime()}*
+*┗──────────────⊷*
+*👑 BILAL-MD WHATSAPP BOT 👑*`;
 
         await conn.sendMessage(from, { 
             text: status,
