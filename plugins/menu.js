@@ -15,7 +15,7 @@ try {
 }
 
 // Helpers
-const monospace = (text) => `\`${text}\``;
+const monospace = (text) => text;
 const formatSize = (bytes) => {
     if (bytes >= 1073741824) return (bytes / 1073741824).toFixed(1) + 'GB';
     return (bytes / 1048576).toFixed(1) + 'MB';
@@ -58,7 +58,7 @@ cmd({
         });
 
         // Construct Menu String
-        let menu = `╭══〘 👑 BILAL-MD 👑 〙══⊷*
+        let menu = `*╭══〘 👑 BILAL-MD 👑 〙══⊷*
 *┃👑 MODE :❯ ${monospace(mode)}*
 *┃👑 USER :❯ ${monospace(userName)}*
 *┃👑 PLUGINS :❯ ${monospace(totalCommands)}*
@@ -68,7 +68,7 @@ cmd({
 *┃👑 SPEED :❯ ${monospace(Math.floor(Math.random() * 50) + 10 + 'MS')}*
 ╰═════════════════⊷
 
-*Command List ⤵*`;
+*👑 COMMANDS LIST 👑*`;
 
         for (const category in commandsByCategory) {
             menu += `\n\n*╭━━━━❮ 👑 ${monospace(category)} 👑 ❯━⊷*\n`;
@@ -89,7 +89,7 @@ cmd({
                 forwardingScore: 1,
                 externalAdReply: {
                     title: 'PROUD TO PAKISTAN 🇵🇰',
-                    body: 'BY BILAL',
+                    body: 'MADE BY BILAL',
                     thumbnail: menuImageBuffer,
                     sourceUrl: 'https://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G',
                     mediaType: 1,
