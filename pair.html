@@ -229,7 +229,48 @@ footer{
 .rgb-box input::placeholder{
     -webkit-text-fill-color:#444;
 }
-    
+
+/* ===== RGB TEXT BUTTON ===== */
+
+@keyframes rgbText{
+    0%{background-position:0%}
+    100%{background-position:400%}
+}
+
+.rgb-btn{
+    width:100%;
+    max-width:320px;
+    padding:14px;
+
+    border:none;
+    border-radius:14px;
+
+    background:#ffffff; /* white box */
+
+    font-size:1rem;
+    font-weight:700;
+    cursor:pointer;
+
+    /* RGB animated text */
+    background-image:linear-gradient(
+        90deg,
+        red,orange,yellow,green,cyan,blue,violet,red
+    );
+
+    background-size:400%;
+    animation:rgbText 6s linear infinite;
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    transition:.2s;
+}
+
+.rgb-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 15px rgba(255,255,255,0.5);
+       }
+   
 </style>
 </head>
 <body>
@@ -249,8 +290,10 @@ footer{
     >
 </div>
     
-    <button onclick="getCode()">✨ GET CODE ✨</button>
-
+<button class="rgb-btn">
+    ✨ GET CODE ✨
+</button>
+   
     <div id="result"></div>
 
     <div class="result-box">
