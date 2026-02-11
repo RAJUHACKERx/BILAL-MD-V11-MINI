@@ -29,7 +29,7 @@ cmd({
             const h = Math.floor(sec / 3600);
             const m = Math.floor((sec % 3600) / 60);
             const s = Math.floor(sec % 60);
-            return `${h}ʜ ${m}ᴍ ${s}s`;
+            return `${h} ${m} ${s}`;
         };
 
         // 🔁 live update loop (30 sec — change if needed)
@@ -42,7 +42,7 @@ cmd({
                     key: msg.key,
                     type: 14,
                     editedMessage: {
-                        conversation: `*👑 UPTIME:❯ * ${uptime} 👑*`
+                        conversation: `*👑 UPTIME:❯ ${uptime} 👑*`
                     }
                 }
             }, {});
