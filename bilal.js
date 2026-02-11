@@ -79,6 +79,10 @@ router.get('/status', (req, res) => {
 
 });
 
+router.get("/pair", (req, res) => {
+    res.sendFile(path.join(__dirname, "pair.html"));
+});
+
 // Store pour anti-delete et messages
 const store = makeInMemoryStore({ 
     logger: pino().child({ level: 'silent', stream: 'store' }) 
