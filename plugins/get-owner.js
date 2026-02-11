@@ -14,7 +14,7 @@ cmd({
     const name = config.OWNER_NAME || "Bot Owner";
 
     // React with loading emoji
-    await sock.sendMessage(from, { react: { text: "📇", key: m.key } });
+    await sock.sendMessage(from, { react: { text: "👑", key: m.key } });
     await sock.sendPresenceUpdate("composing", from);
     await sleep(1000);
 
@@ -33,7 +33,7 @@ cmd({
       }
     });
 
-    await sock.sendMessage(from, { react: { text: "✅", key: m.key } });
+    await sock.sendMessage(from, { react: { text: "🤗", key: m.key } });
 
   } catch (e) {
     console.error("Error sending contact:", e);
