@@ -15,26 +15,26 @@ cmd({
 }, async (conn, mek, msg, { from, args, reply }) => {
   try {
     const url = args[0];
-    if (!url) return reply("❌ Please provide a URL\nExample: .screenshot https://google.com");
-    if (!url.startsWith("http")) return reply("❌ URL must start with http:// or https://");
+    if (!url) return reply("*APKO KISI WEBSITE KA SCREENSHOT DEKHNA HAI 🤔 TO AP US WEBSITE KA LINK COPY KAR LO 🤗*\n*PHIR ESE LIKHO ☺️*\n\n*SS ❮WEBSITE LINK❯*\n\n*JAB AP ESE LIKHO GE 😊 TO US WEBSITE KA SCREENSHOT LE KAR 😃 YAHA PER SEND KIA JAYE GA 😍♥️*");
+    if (!url.startsWith("http")) return reply("*SIRF WEBSITE KA LINK LIKHO 🤗*\n*JESE.....*\n\n*.SS https://github.com/BILALTECH05/BILAL-MD*");
 
     // ASCII loading bars with percentage
     const loadingBars = [
-        { percent: 10, bar: "[▓░░░░░░░░░]", text: "✦ Initializing capture..." },
-        { percent: 20, bar: "[▓▓░░░░░░░░]", text: "✦ Connecting to website..." },
-        { percent: 30, bar: "[▓▓▓░░░░░░░]", text: "✦ Loading page content..." },
-        { percent: 40, bar: "[▓▓▓▓░░░░░░]", text: "✦ Rendering elements..." },
-        { percent: 50, bar: "[▓▓▓▓▓░░░░░]", text: "✦ Processing JavaScript..." },
-        { percent: 60, bar: "[▓▓▓▓▓▓░░░░]", text: "✦ Capturing viewport..." },
-        { percent: 70, bar: "[▓▓▓▓▓▓▓░░░]", text: "✦ Scrolling page..." },
-        { percent: 80, bar: "[▓▓▓▓▓▓▓▓░░]", text: "✦ Finalizing screenshot..." },
-        { percent: 90, bar: "[▓▓▓▓▓▓▓▓▓░]", text: "✦ Optimizing image..." },
-        { percent: 100, bar: "[▓▓▓▓▓▓▓▓▓▓]", text: "✓ Capture complete!" }
+        { percent: 10, bar: "*[▓░░░░░░░░░]*", text: "*✦ INITIALIZING CAPTURE...*" },
+        { percent: 20, bar: "*[▓▓░░░░░░░░]*", text: "*✦ ONNECTING TO WEBSITE...*" },
+        { percent: 30, bar: "*[▓▓▓░░░░░░░]*", text: "*✦ LOADING PAGE VIEW...* " },
+        { percent: 40, bar: "*[▓▓▓▓░░░░░░]*", text: "*✦ TESTING ELEMENTS...*" },
+        { percent: 50, bar: "*[▓▓▓▓▓░░░░░]*", text: "*✦ PROCESSING PAGE...*" },
+        { percent: 60, bar: "*[▓▓▓▓▓▓░░░░]*", text: "*✦ CHECKING PAGE...*" },
+        { percent: 70, bar: "*[▓▓▓▓▓▓▓░░░]*", text: "*✦ REDIRECTING SCREENSHOT...*" },
+        { percent: 80, bar: "*[▓▓▓▓▓▓▓▓░░]*", text: "*✦ REPLACING...*" },
+        { percent: 90, bar: "*[▓▓▓▓▓▓▓▓▓░]*", text: "✦ SENDING SCREENSHOT..." },
+        { percent: 100, bar: "*[▓▓▓▓▓▓▓▓▓▓]*", text: "*SUCCESSFUL*" }
     ];
 
     // Send initial message
     const loadingMsg = await conn.sendMessage(from, {
-        text: "🔄 Starting screenshot capture...\n✦ Please wait..."
+        text: "*APNI WEBSITE KA SCREENSHOT DEKHE JIS KA LINK AP NE LIKHA THA 🤗*"
     }, { quoted: mek });
 
     // Animate loading progress
@@ -58,7 +58,7 @@ cmd({
             key: loadingMsg.key,
             type: 14,
             editedMessage: {
-                conversation: "✅ Screenshot Captured!\n✦ Sending now..."
+                conversation: "*SCREENSHOT SENDED ✅*"
             }
         }
     }, {});
@@ -68,13 +68,13 @@ cmd({
     // Send the actual screenshot
     await conn.sendMessage(from, {
         image: { url: `https://image.thum.io/get/fullpage/${url}` },
-        caption: "- 🖼️ *Screenshot Generated*\n\n" +
-                "> popkid"
+        caption: "*👑 SCREENSHOT BY 👑*\n\n" +
+                "*👑 BILAL-MD WHATSAPP BOT 👑*"
     }, { quoted: mek });
 
   } catch (error) {
     console.error("Error:", error);
-    reply("❌ Failed to capture screenshot\n✦ Please try again later");
+    reply("*DUBARA KOSHISH KARE 🤗*");
   }
 });
 
