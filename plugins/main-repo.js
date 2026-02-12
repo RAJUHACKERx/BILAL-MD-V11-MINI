@@ -29,7 +29,7 @@ async (conn, mek, m, { from, reply }) => {
 
         // Format the repository information in new stylish format
         const formattedInfo = `
-*┏────〘 *👑 INFO 👑* 〙───⊷*
+*┏────〘 👑 INFO 👑 〙───⊷*
 *┃👑 NAME :❯ ${repoData.name}*
 *┃👑 STARS :❯ ❮ ${repoData.stargazers_count} ❯*
 *┃👑 FORKS :❯ ❮ ${repoData.forks_count} ❯*
@@ -40,9 +40,6 @@ ${repoData.description || '*PROUD TO PAKISTAN 🇵🇰*'}
 
 *👑 REPO LINK 👑* 
 *${repoData.html_url}*
-
-*👑 URDU LANGUAGE 👑*
-*👑 WHATSAPP BOT 👑*
 
 *👑 ClICK HERE FOR HELP 👑* 
 
@@ -55,7 +52,8 @@ ${repoData.description || '*PROUD TO PAKISTAN 🇵🇰*'}
 *👑 SUPPORT GROUP 👑* 
 *https://chat.whatsapp.com/BwWffeDwiqe6cjDDklYJ5m?mode=ems_copy_t*
 
-*👑 BILAL-MD 👑*
+*👑 URDU LANGUAGE WHATSAPP BOT👑*
+*👑 BILAL-MD BEST BOT 👑*
 `.trim();
 
         // Send an image with the formatted info as a caption
