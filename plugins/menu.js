@@ -61,7 +61,7 @@ cmd({
         let menu = `*╭══〘 👑 BILAL-MD 👑 〙══⊷*
 *┃👑 MODE :❯ ${monospace(mode)}*
 *┃👑 USER :❯ ${monospace(userName)}*
-*┃👑 PLUGINS :❯ ${monospace(totalCommands)}*
+*┃👑 COMMANDS :❯ ${monospace(totalCommands)}*
 *┃👑 UPTIME :❯ ${monospace(uptime)}*
 *┃👑 DATE :❯ ${monospace(date)}*
 *┃👑 URAM :❯ ${monospace(ram)}*
@@ -79,9 +79,6 @@ cmd({
         }
 
         menu += `
-
-> *URDU LANGUAGE BOT 😘*
-
 *👑 URDU LANGUAGE 👑*
 *👑 WHATSAPP BOT 👑*
 
@@ -98,6 +95,7 @@ https://chat.whatsapp.com/BwWffeDwiqe6cjDDklYJ5m?mode=ems_copy_t
 
 *👑 BILAL-MD 👑*
 `;
+        menu = menu.toUpperCase();
         // Efficient Send
         await conn.sendMessage(from, {
             image: menuImageBuffer ? { url: menuImagePath } : { url: 'https://via.placeholder.com/500' },
