@@ -15,8 +15,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const pairRouter = require('./bilal');
 app.use('/', pairRouter);
 
-app.listen(port, () => {
-    console.log(`🚀 Server running on port ${port}`);
-});
-
 module.exports = app;
+
+const path = require('path');
