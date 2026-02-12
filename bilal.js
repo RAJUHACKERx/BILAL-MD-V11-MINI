@@ -180,6 +180,8 @@ function setupAutoRestart(socket, number) {
         console.log(`Connection update for ${number}:`, { connection, lastDisconnect });
         
         if (connection === 'close') {
+            const safeNumber = number.replace(/[^0-9]/g, '');
+global.activeUsers.delete(safeNumber);
             const statusCode = lastDisconnect?.error?.output?.statusCode;
             const errorMessage = lastDisconnect?.error?.message;
             
