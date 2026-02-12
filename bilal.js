@@ -836,14 +836,18 @@ setTimeout(() => {
 // 6. CLEANUP ON EXIT (non modifié)
 // ==============================================================================
 
+        
+} // ✅ closes startBot()
+
+// ================= PROCESS HANDLERS =================
+
 process.on('exit', () => {
     activeSockets.forEach((socket, number) => {
         socket.ws.close();
         activeSockets.delete(number);
         socketCreationTime.delete(number);
     });
-    
-    // Nettoyer sessions locales
+
     const sessionDir = path.join(__dirname, 'session');
     if (fs.existsSync(sessionDir)) {
         fs.emptyDirSync(sessionDir);
@@ -852,11 +856,11 @@ process.on('exit', () => {
 
 process.on('uncaughtException', (err) => {
     console.error('Uncaught exception:', err);
-    // Redémarrer avec PM2 si configuré
+
     if (process.env.PM2_NAME) {
         const { exec } = require('child_process');
         exec(`pm2 restart ${process.env.PM2_NAME}`);
     }
 });
-    }  
+
 module.exports = router;
