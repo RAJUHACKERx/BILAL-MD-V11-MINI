@@ -59,13 +59,13 @@ cmd({
 
         // Construct Menu String
         let menu = `*╭══〘 👑 BILAL-MD 👑 〙══⊷*
-*┃👑 MODE :❯ ${monospace(mode)}*
-*┃👑 USER :❯ ${monospace(userName)}*
-*┃👑 COMMANDS :❯ ${monospace(totalCommands)}*
-*┃👑 UPTIME :❯ ${monospace(uptime)}*
-*┃👑 DATE :❯ ${monospace(date)}*
-*┃👑 URAM :❯ ${monospace(ram)}*
-*┃👑 SPEED :❯ ${monospace(Math.floor(Math.random() * 50) + 10 + 'MS')}*
+*┃👑 MODE :❯* ${monospace(mode)}
+*┃👑 USER :❯* ${monospace(userName)}
+*┃👑 COMMANDS :❯* ${monospace(totalCommands)}
+*┃👑 UPTIME :❯* ${monospace(uptime)}
+*┃👑 DATE :❯* ${monospace(date)}
+*┃👑 URAM :❯* ${monospace(ram)}
+*┃👑 SPEED :❯ ${monospace(Math.floor(Math.random() * 50) + 10 + 'MS')}
 ╰═════════════════⊷
 
 *👑 COMMANDS LIST 👑*`;
@@ -73,15 +73,12 @@ cmd({
         for (const category in commandsByCategory) {
             menu += `\n\n*╭━━━━❮ 👑 ${monospace(category)} 👑 ❯━⊷*\n`;
             commandsByCategory[category].sort().forEach(cmdName => {
-                menu += `*┃👑 ${monospace(config.PREFIX + cmdName)}*\n`;
+                menu += `┃👑 ${monospace(config.PREFIX + cmdName)}\n`;
             });
             menu += `*╰━━━━━━━━━━━━━━━━━⊷*`;
         }
 
         menu += `
-*👑 URDU LANGUAGE 👑*
-*👑 WHATSAPP BOT 👑*
-
 *👑 CLICK HERE FOR HELP 👑*
 
 *👑 DEVELOPER 👑*
@@ -93,7 +90,8 @@ https://whatsapp.com/channel/0029VbBXuGe4yltMLngL582d
 *👑 SUPPORT GROUP 👑*
 https://chat.whatsapp.com/BwWffeDwiqe6cjDDklYJ5m?mode=ems_copy_t
 
-*👑 BILAL-MD 👑*
+*👑 URDU LANGUAGE WHATSAPP BOT👑*
+*👑 MADE BY BILAL KING 👑*
 `;
         menu = menu.toUpperCase();
         // Efficient Send
