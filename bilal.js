@@ -47,9 +47,58 @@ const moment = require('moment-timezone');
 const prefix = config.PREFIX;
 const mode = config.MODE;
 const router = express.Router();
+
 // ===== SERVER LIMIT =====
 const MAX_CONNECTIONS = 5;
 global.activeUsers = global.activeUsers || new Set();
+
+// ===== STATUS TRACKING =====
+const serverStartTime = Date.now();
+
+function formatUptime(ms) {
+    let totalSeconds = Math.floor(ms / 1000);
+
+    const days = Math.floor(totalSeconds / 86400);
+    totalSeconds %= 86400;
+
+    const hours = Math.floor(totalSeconds / 3600);
+    totalSeconds %= 3600;
+
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+}
+
+// ===== STATUS API =====
+router.get('/status', (req, res) => {
+    const now = Date.now();
+
+    const uptimeMs = now - serverStartTime;
+    const uptime = formatUptime(uptimeMs);
+
+    const connected = global.activeUsers.size;
+    const remaining = MAX_CONNECTIONS - connected;
+
+    res.json({
+        server: "running",        // real state (agar yeh response aaya = server active)
+        status: "active",
+        uptime: uptime,
+        started_at: new Date(serverStartTime).toISOString(),
+
+        users: {
+            connected,
+            remaining_slots: remaining,
+            max_limit: MAX_CONNECTIONS
+        },
+
+        timestamp: new Date().toISOString()
+    });
+});
+
+router.get('/pair', (req, res) => {
+  res.sendFile(path.join(__dirname, 'pair.html'));
+});
 
 // ==============================================================================
 // 1. INITIALIZATION & DATABASE
