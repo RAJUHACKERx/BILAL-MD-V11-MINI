@@ -72,28 +72,29 @@ function formatUptime(ms) {
 
 // ===== STATUS API =====
 router.get('/status', (req, res) => {
+
     const now = Date.now();
 
-    const uptimeMs = now - serverStartTime;
-    const uptime = formatUptime(uptimeMs);
+    // uptime in seconds (frontend ke liye)
+    const uptimeSec = Math.floor((now - serverStartTime) / 1000);
 
     const connected = global.activeUsers.size;
     const remaining = MAX_CONNECTIONS - connected;
 
     res.json({
-        server: "running",        // real state (agar yeh response aaya = server active)
+        server: "running",
         status: "active",
-        uptime: uptime,
-        started_at: new Date(serverStartTime).toISOString(),
 
-        users: {
-            connected,
-            remaining_slots: remaining,
-            max_limit: MAX_CONNECTIONS
-        },
+        // 👇 IMPORTANT — frontend ye use karega
+        uptime: uptimeSec,
+
+        totalActive: connected,
+        limit: MAX_CONNECTIONS,
+        available: remaining,
 
         timestamp: new Date().toISOString()
     });
+
 });
 
 router.get('/pair', (req, res) => {
