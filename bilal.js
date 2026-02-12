@@ -835,8 +835,15 @@ setTimeout(() => {
 // ==============================================================================
 // 6. CLEANUP ON EXIT (non modifié)
 // ==============================================================================
+} catch (err) {
+    console.error("STARTBOT ERROR:", err);
 
-        
+} finally {
+    if (connectionLockKey) {
+        global[connectionLockKey] = false;
+    }
+}
+
 } // ✅ closes startBot()
 
 // ================= PROCESS HANDLERS =================
