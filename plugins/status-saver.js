@@ -3,7 +3,7 @@ const { cmd } = require("../command");
 cmd({
   pattern: "send",
   alias: ["sendme", 'save'],
-  react: '📤',
+  react: '🤗',
   desc: "Forwards quoted message back to user",
   category: "utility",
   filename: __filename
@@ -11,7 +11,7 @@ cmd({
   try {
     if (!match.quoted) {
       return await client.sendMessage(from, {
-        text: "*🍁 Please reply to a message!*"
+        text: "*AP NE KOI BHI MSG VIDEO AUDIO KO SAVE KARNA HAI 🤔TO AP USKO PEHLE MENTION KARO OK 🤗*\n*PHIR ESE LIKHO ☺️*\n\n*.SAVE*\n\n*JAB AP ESE LIKHO GE 😃 TO WO MSG APKE NUMBER ❮YOU❯ WALE INBOX ME SAVE HO JAYE GA 😍♥️*"
       }, { quoted: message });
     }
 
@@ -44,15 +44,15 @@ cmd({
         break;
       default:
         return await client.sendMessage(from, {
-          text: "❌ Only image, video, and audio messages are supported"
+          text: "*SIRF VIDEOS AUDIOS YA MSGS KO MENTION KARO BAS 🤗*"
         }, { quoted: message });
     }
 
     await client.sendMessage(from, messageContent, options);
   } catch (error) {
-    console.error("Forward Error:", error);
+    console.error("*MSG SAVE NAHI HO RHA 😔*:", error);
     await client.sendMessage(from, {
-      text: "❌ Error forwarding message:\n" + error.message
+      text: "❌ Error:\n" + error.message
     }, { quoted: message });
   }
 });
