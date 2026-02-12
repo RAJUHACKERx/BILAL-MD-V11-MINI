@@ -71,7 +71,7 @@ cmd({
 *👑 COMMANDS LIST 👑*`;
 
         for (const category in commandsByCategory) {
-            menu += `\n\n*╭━━━━❮ 👑 ${monospace(category)} 👑 ❯━⊷*\n`;
+            menu += `\n\n*╭━━━━❮* 👑 ${monospace(category)} 👑 *❯━⊷*\n`;
             commandsByCategory[category].sort().forEach(cmdName => {
                 menu += `┃👑 ${monospace(config.PREFIX + cmdName)}\n`;
             });
@@ -90,7 +90,7 @@ https://whatsapp.com/channel/0029VbBXuGe4yltMLngL582d
 *👑 SUPPORT GROUP 👑*
 https://chat.whatsapp.com/BwWffeDwiqe6cjDDklYJ5m?mode=ems_copy_t
 
-*👑 URDU LANGUAGE WHATSAPP BOT👑*
+*👑 URDU LANGUAGE BOT 👑*
 *👑 MADE BY BILAL KING 👑*
 `;
         menu = menu.toUpperCase();
