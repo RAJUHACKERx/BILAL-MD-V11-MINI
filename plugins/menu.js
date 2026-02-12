@@ -78,8 +78,26 @@ cmd({
             menu += `*╰━━━━━━━━━━━━━━━━━⊷*`;
         }
 
-        menu += `\n\n> *URDU LANGUAGE BOT 😘`;
+        menu += `
 
+> *URDU LANGUAGE BOT 😘*
+
+*👑 URDU LANGUAGE 👑*
+*👑 WHATSAPP BOT 👑*
+
+*👑 CLICK HERE FOR HELP 👑*
+
+*👑 DEVELOPER 👑*
+https://akaserein.github.io/Bilal/
+
+*👑 SUPPORT CHANNEL 👑*
+https://whatsapp.com/channel/0029VbBXuGe4yltMLngL582d
+
+*👑 SUPPORT GROUP 👑*
+https://chat.whatsapp.com/BwWffeDwiqe6cjDDklYJ5m?mode=ems_copy_t
+
+*👑 BILAL-MD 👑*
+`;
         // Efficient Send
         await conn.sendMessage(from, {
             image: menuImageBuffer ? { url: menuImagePath } : { url: 'https://via.placeholder.com/500' },
