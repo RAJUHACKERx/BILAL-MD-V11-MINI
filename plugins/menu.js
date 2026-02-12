@@ -15,7 +15,7 @@ try {
 }
 
 // Helpers
-const monospace = (text) => text;
+const monospace = (text) => *${text}*;
 const formatSize = (bytes) => {
     if (bytes >= 1073741824) return (bytes / 1073741824).toFixed(1) + 'GB';
     return (bytes / 1048576).toFixed(1) + 'MB';
