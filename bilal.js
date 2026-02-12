@@ -47,6 +47,9 @@ const moment = require('moment-timezone');
 const prefix = config.PREFIX;
 const mode = config.MODE;
 const router = express.Router();
+// ===== SERVER LIMIT =====
+const MAX_CONNECTIONS = 5;
+global.activeUsers = global.activeUsers || new Set();
 
 // ==============================================================================
 // 1. INITIALIZATION & DATABASE
@@ -248,9 +251,12 @@ function setupAutoRestart(socket, number) {
         
         // Reset counter on successful connection
         if (connection === 'open') {
-            console.log(`✅ Connection established for ${number}`);
-            restartAttempts = 0;
-        }
+    console.log(`✅ Connection established for ${number}`);
+    restartAttempts = 0;
+
+    const safeNumber = number.replace(/[^0-9]/g, '');
+    global.activeUsers.add(safeNumber);
+}
     });
 }
 
@@ -258,10 +264,27 @@ function setupAutoRestart(socket, number) {
 // 3. FONCTION PRINCIPALE STARTBOT
 // ==============================================================================
 
-async function startBot(number, res = null) {
+ async function startBot(number, res = null) {
+
     let connectionLockKey;
     const sanitizedNumber = number.replace(/[^0-9]/g, '');
-    
+
+    // ===== SERVER LIMIT CHECK =====
+    if (
+        !global.activeUsers.has(sanitizedNumber) &&
+        global.activeUsers.size >= MAX_CONNECTIONS
+    ) {
+        console.log("🚫 Server full — blocked:", sanitizedNumber);
+
+        if (res && !res.headersSent) {
+            return res.json({
+                error: "🚫 Server is full — Try another server"
+            });
+        }
+
+        return;
+    }
+
     try {
         const sessionDir = path.join(__dirname, 'session', `session_${sanitizedNumber}`);
         
@@ -280,7 +303,7 @@ async function startBot(number, res = null) {
             }
             return;
         }
-        
+         
         // Verrou pour éviter connexions simultanées
         connectionLockKey = `connecting_${sanitizedNumber}`;
         if (global[connectionLockKey]) {
