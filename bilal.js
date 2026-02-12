@@ -155,37 +155,6 @@ for (const file of files) {
     }
 }
 
-// ==============================================================================
-// 2. HANDLERS SPÉCIFIQUES
-// ==============================================================================
-
-async function setupMessageHandlers(socket, number) {
-    socket.ev.on('messages.upsert', async ({ messages }) => {
-        const msg = messages[0];
-        if (!msg.message || msg.key.remoteJid === 'status@broadcast') return;
-
-        // Charger config utilisateur depuis MongoDB
-        const userConfig = await getUserConfigFromMongoDB(number);
-        
-        // Auto-typing basé sur config
-        if (userConfig.AUTO_TYPING === 'true') {
-            try {
-                await socket.sendPresenceUpdate('composing', msg.key.remoteJid);
-            } catch (error) {
-                console.error(`Failed to set typing presence:`, error);
-            }
-        }
-        
-        // Auto-recording basé sur config
-        if (userConfig.AUTO_RECORDING === 'true') {
-            try {
-                await socket.sendPresenceUpdate('recording', msg.key.remoteJid);
-            } catch (error) {
-                console.error(`Failed to set recording presence:`, error);
-            }
-        }
-    });
-}
 
 async function setupCallHandlers(socket, number) {
     socket.ev.on('call', async (calls) => {
