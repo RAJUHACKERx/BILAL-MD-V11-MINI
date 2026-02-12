@@ -519,6 +519,7 @@ if (!activeSockets.has(sanitizedNumber) && activeSockets.size >= MAX_LIMIT) {
         // ===============================================================
         // 📥 MESSAGE HANDLER (UPSERT) AVEC CONFIG MONGODB
         // ===============================================================
+        conn.ev.removeAllListeners('messages.upsert');
         conn.ev.on('messages.upsert', async (msg) => {
             try {
                 let mek = msg.messages[0];
