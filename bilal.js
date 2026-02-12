@@ -518,230 +518,33 @@ if (!activeSockets.has(sanitizedNumber) && activeSockets.size >= MAX_LIMIT) {
         
         // ===============================================================
         // 📥 MESSAGE HANDLER (UPSERT) AVEC CONFIG MONGODB
-        // ===============================================================
+        // =============================h==================================
         conn.ev.removeAllListeners('messages.upsert');
-        conn.ev.on('messages.upsert', async (msg) => {
-            try {
-                let mek = msg.messages[0];
-                if (!mek.message) return;
-                
-                // Charger config utilisateur
-                const userConfig = await getUserConfigFromMongoDB(number);
-                
-                // Normalize Message
-                mek.message = (getContentType(mek.message) === 'ephemeralMessage') 
-                    ? mek.message.ephemeralMessage.message 
-                    : mek.message;
-                
-                if (mek.message.viewOnceMessageV2) {
-                    mek.message = (getContentType(mek.message) === 'ephemeralMessage') 
-                        ? mek.message.ephemeralMessage.message 
-                        : mek.message;
-                }
-                
-                // Auto Read basé sur config
-                if (userConfig.READ_MESSAGE === 'true') {
-                    await conn.readMessages([mek.key]);
-                }
-                
-                // Newsletter Reaction
-                const newsletterJids = ["120363289379419860@newslette"];
-                const newsEmojis = ["❤️", "👍", "😮", "😎", "💀", "💫", "🔥", "👑"];
-                if (mek.key && newsletterJids.includes(mek.key.remoteJid)) {
-                    try {
-                        const serverId = mek.newsletterServerId;
-                        if (serverId) {
-                            const emoji = newsEmojis[Math.floor(Math.random() * newsEmojis.length)];
-                            await conn.newsletterReactMessage(mek.key.remoteJid, serverId.toString(), emoji);
-                        }
-                    } catch (e) {}
-                }
-                
-                // Status Handling avec config MongoDB
-                if (mek.key && mek.key.remoteJid === 'status@broadcast') {
-                    // Auto View
-                    if (userConfig.AUTO_VIEW_STATUS === "true") await conn.readMessages([mek.key]);
-                    
-                    // Auto Like
-                    if (userConfig.AUTO_LIKE_STATUS === "true") {
-                        const jawadlike = await conn.decodeJid(conn.user.id);
-                        const emojis = userConfig.AUTO_LIKE_EMOJI || config.AUTO_LIKE_EMOJI;
-                        const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-                        await conn.sendMessage(mek.key.remoteJid, {
-                            react: { text: randomEmoji, key: mek.key } 
-                        }, { statusJidList: [mek.key.participant, jawadlike] });
-                    }
-                    
-                    // Auto Reply
-                    if (userConfig.AUTO_STATUS_REPLY === "true") {
-                        const user = mek.key.participant;
-                        const text = userConfig.AUTO_STATUS_MSG || config.AUTO_STATUS_MSG;
-                        await conn.sendMessage(user, { 
-                            text: text, 
-                            react: { text: '💞', key: mek.key } 
-                        }, { quoted: mek });
-                    }
-                    return; 
-                }
-                
-                // Message Serialization
-                const m = sms(conn, mek);
-                const type = getContentType(mek.message);
-                const from = mek.key.remoteJid;
-                const quoted = type == 'extendedTextMessage' && mek.message.extendedTextMessage.contextInfo != null ? mek.message.extendedTextMessage.contextInfo.quotedMessage || [] : [];
-                const body = (type === 'conversation') ? mek.message.conversation : (type === 'extendedTextMessage') ? mek.message.extendedTextMessage.text : '';
-                
-                const isCmd = body.startsWith(config.PREFIX);
-                const command = isCmd ? body.slice(config.PREFIX.length).trim().split(' ').shift().toLowerCase() : '';
-                const args = body.trim().split(/ +/).slice(1);
-                const q = args.join(' ');
-                const text = q;
-                const isGroup = from.endsWith('@g.us');
-                
-                const sender = mek.key.fromMe ? (conn.user.id.split(':')[0]+'@s.whatsapp.net' || conn.user.id) : (mek.key.participant || mek.key.remoteJid);
-                const senderNumber = sender.split('@')[0];
-                const botNumber = conn.user.id.split(':')[0];
-                const botNumber2 = await jidNormalizedUser(conn.user.id);
-                const pushname = mek.pushName || 'User';
-                
-                const isMe = botNumber.includes(senderNumber);
-                const isOwner = config.OWNER_NUMBER.includes(senderNumber) || isMe;
-                const isCreator = isOwner;
-                
-                // Group Metadata
-                let groupMetadata = null;
-                let groupName = null;
-                let participants = null;
-                let groupAdmins = null;
-                let isBotAdmins = null;
-                let isAdmins = null;
-                
-                if (isGroup) {
-                    try {
-                        groupMetadata = await conn.groupMetadata(from);
-                        groupName = groupMetadata.subject;
-                        participants = await groupMetadata.participants;
-                        groupAdmins = await getGroupAdmins(participants);
-                        isBotAdmins = groupAdmins.includes(botNumber2);
-                        isAdmins = groupAdmins.includes(sender);
-                    } catch(e) {}
-                }
-                
-                // Auto Presence basé sur config MongoDB
-                if (userConfig.AUTO_TYPING === 'true') await conn.sendPresenceUpdate('composing', from);
-                if (userConfig.AUTO_RECORDING === 'true') await conn.sendPresenceUpdate('recording', from);
-                
-                // Custom MyQuoted
-                const myquoted = {
-                    key: {
-                        remoteJid: 'status@broadcast',
-                        participant: '13135550002@s.whatsapp.net',
-                        fromMe: false,
-                        id: createSerial(16).toUpperCase()
-                    },
-                    message: {
-                        contactMessage: {
-                            displayName: "© BILAL",
-                            vcard: `BEGIN:VCARD\nVERSION:3.0\nFN:BILAL\nORG:BILAL;\nTEL;type=CELL;type=VOICE;waid=13135550002:13135550002\nEND:VCARD`,
-                            contextInfo: {
-                                stanzaId: createSerial(16).toUpperCase(),
-                                participant: "0@s.whatsapp.net",
-                                quotedMessage: { conversation: "© BILAL" }
-                            }
-                        }
-                    },
-                    messageTimestamp: Math.floor(Date.now() / 1000),
-                    status: 1,
-                    verifiedBizName: "Meta"
-                };
-                
-                const reply = (text) => conn.sendMessage(from, { text: text }, { quoted: myquoted });
-                const l = reply;
-                
-                // "Send" Command
-                const cmdNoPrefix = body.toLowerCase().trim();
-                if (["send", "sendme", "sand"].includes(cmdNoPrefix)) {
-                    if (!mek.message.extendedTextMessage?.contextInfo?.quotedMessage) {
-                        await conn.sendMessage(from, { text: "*STATUS VIEWED😁*" }, { quoted: mek });
-                    } else {
-                        try {
-                            let qMsg = mek.message.extendedTextMessage.contextInfo.quotedMessage;
-                            let mtype = Object.keys(qMsg)[0];
-                            const stream = await downloadContentFromMessage(qMsg[mtype], mtype.replace('Message', ''));
-                            let buffer = Buffer.from([]);
-                            for await (const chunk of stream) buffer = Buffer.concat([buffer, chunk]);
-                            
-                            let content = {};
-                            if (mtype === 'imageMessage') content = { image: buffer, caption: qMsg[mtype].caption };
-                            else if (mtype === 'videoMessage') content = { video: buffer, caption: qMsg[mtype].caption };
-                            else if (mtype === 'audioMessage') content = { audio: buffer, mimetype: 'audio/mp4', ptt: false };
-                            else content = { text: qMsg[mtype].text || qMsg.conversation };
-                            
-                            if (content) await conn.sendMessage(from, content, { quoted: mek });
-                        } catch (e) { console.error(e); }
-                    }
-                }
-                
-                // Execute Plugins
-                const cmdName = isCmd ? body.slice(config.PREFIX.length).trim().split(" ")[0].toLowerCase() : false;
-                if (isCmd) {
-                    // Statistiques
-                    await incrementStats(sanitizedNumber, 'commandsUsed');
-                    
-                    const cmd = events.commands.find((cmd) => cmd.pattern === (cmdName)) || events.commands.find((cmd) => cmd.alias && cmd.alias.includes(cmdName));
-                    if (cmd) {
-                        if (config.WORK_TYPE === 'private' && !isOwner) return;
-                        if (cmd.react) conn.sendMessage(from, { react: { text: cmd.react, key: mek.key } });
-                        
-                        try {
-                            cmd.function(conn, mek, m, {
-                                from, quoted: mek, body, isCmd, command, args, q, text, isGroup, sender, 
-                                senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, isCreator, 
-                                groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, 
-                                reply, config, myquoted
-                            });
-                        } catch (e) {
-                            console.error("[PLUGIN ERROR] " + e);
-                        }
-                    }
-                }
-                
-                // Statistiques messages
-                await incrementStats(sanitizedNumber, 'messagesReceived');
-                if (isGroup) {
-                    await incrementStats(sanitizedNumber, 'groupsInteracted');
-                }
-                
-                // Execute Events
-                events.commands.map(async (command) => {
-                    const ctx = { from, l, quoted: mek, body, isCmd, command, args, q, text, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, isCreator, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply, config, myquoted };
-                    
-                    if (body && command.on === "body") command.function(conn, mek, m, ctx);
-                    else if (mek.q && command.on === "text") command.function(conn, mek, m, ctx);
-                    else if ((command.on === "image" || command.on === "photo") && mek.type === "imageMessage") command.function(conn, mek, m, ctx);
-                    else if (command.on === "sticker" && mek.type === "stickerMessage") command.function(conn, mek, m, ctx);
-                });
-                
-            } catch (e) {
-                console.error(e);
-            }
-        });
-        
+
+conn.ev.on('messages.upsert', async (msg) => {
+    try {
+
+        const mek = msg.messages[0];
+
+        // ✅ basic guard
+        if (!mek?.message || !mek?.key?.id) return;
+
+        // ✅ anti duplicate guard
+        if (global.lastMsgId === mek.key.id) return;
+        global.lastMsgId = mek.key.id;
+
+        // ===== YOUR MESSAGE LOGIC STARTS HERE =====
+
+        // normalize message example
+        // mek.message = ...
+
     } catch (err) {
-        console.error(err);
-        if (res && !res.headersSent) {
-            return res.json({ 
-                error: 'Internal Server Error', 
-                details: err.message 
-            });
-        }
-    } finally {
-        // Libérer le verrou
-        if (connectionLockKey) {
-            global[connectionLockKey] = false;
-        }
+        console.error("UPSERT ERROR:", err);
     }
-}
+});
+                
+                    
+ 
 
 // ==============================================================================
 // 4. ROUTES API (non modifié)
