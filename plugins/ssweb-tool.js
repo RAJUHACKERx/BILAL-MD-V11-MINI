@@ -20,15 +20,15 @@ cmd({
 
     // ASCII loading bars with percentage
     const loadingBars = [
-        { percent: 10, bar: "*[▓░░░░░░░░░]*", text: "*✦ INITIALIZING CAPTURE...*" },
-        { percent: 20, bar: "*[▓▓░░░░░░░░]*", text: "*✦ ONNECTING TO WEBSITE...*" },
-        { percent: 30, bar: "*[▓▓▓░░░░░░░]*", text: "*✦ LOADING PAGE VIEW...* " },
-        { percent: 40, bar: "*[▓▓▓▓░░░░░░]*", text: "*✦ TESTING ELEMENTS...*" },
-        { percent: 50, bar: "*[▓▓▓▓▓░░░░░]*", text: "*✦ PROCESSING PAGE...*" },
-        { percent: 60, bar: "*[▓▓▓▓▓▓░░░░]*", text: "*✦ CHECKING PAGE...*" },
+        { percent: 10, bar: "*[▓░░░░░░░░░]*", text: "*✦ INITIALIZING CAPTURE.....*" },
+        { percent: 20, bar: "*[▓▓░░░░░░░░]*", text: "*✦ ONNECTING TO WEBSITE.....*" },
+        { percent: 30, bar: "*[▓▓▓░░░░░░░]*", text: "*✦ LOADING PAGE VIEW.....* " },
+        { percent: 40, bar: "*[▓▓▓▓░░░░░░]*", text: "*✦ TESTING ELEMENTS.....*" },
+        { percent: 50, bar: "*[▓▓▓▓▓░░░░░]*", text: "*✦ PROCESSING PAGE.....*" },
+        { percent: 60, bar: "*[▓▓▓▓▓▓░░░░]*", text: "*✦ CHECKING PAGE.....*" },
         { percent: 70, bar: "*[▓▓▓▓▓▓▓░░░]*", text: "*✦ REDIRECTING SCREENSHOT...*" },
-        { percent: 80, bar: "*[▓▓▓▓▓▓▓▓░░]*", text: "*✦ REPLACING...*" },
-        { percent: 90, bar: "*[▓▓▓▓▓▓▓▓▓░]*", text: "✦ SENDING SCREENSHOT..." },
+        { percent: 80, bar: "*[▓▓▓▓▓▓▓▓░░]*", text: "*✦ REPLACING.....*" },
+        { percent: 90, bar: "*[▓▓▓▓▓▓▓▓▓░]*", text: "*✦ SENDING SCREENSHOT.....*" },
         { percent: 100, bar: "*[▓▓▓▓▓▓▓▓▓▓]*", text: "*SUCCESSFUL*" }
     ];
 
