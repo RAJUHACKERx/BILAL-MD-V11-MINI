@@ -372,7 +372,6 @@ if (!activeSockets.has(sanitizedNumber) && activeSockets.size >= MAX_LIMIT) {
         store.bind(conn.ev);
         
         // 4. Setup handlers
-        setupMessageHandlers(conn, number);
         setupCallHandlers(conn, number);
         setupAutoRestart(conn, number); // Configure l'autoreconnect
         
