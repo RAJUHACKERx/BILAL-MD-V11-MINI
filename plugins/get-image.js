@@ -11,7 +11,7 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, reply, text }) => {
     try {
-        if (!text) return reply('Please provide an image URL\nExample: !getimage https://example.com/image.jpg');
+        if (!text) return reply('*ESE LIKHO JO IMAGE APKO CHAHYE*\n*.GETIMAGE ❮ IMAGE LINK❯*');
 
         const imageUrl = text.trim();
 
@@ -24,10 +24,10 @@ cmd({
         try {
             const response = await axios.head(imageUrl);
             if (!response.headers['content-type']?.startsWith('image/')) {
-                return reply('❌ URL does not point to a valid image');
+                return reply('*KISI PHOTO KA LINK LIKHO 🤗*');
             }
         } catch (e) {
-            return reply('❌ Could not access image URL. Please check the link');
+            return reply('*DUBARA KOSHISH KARE 🤗*');
         }
 
         // Send the image
