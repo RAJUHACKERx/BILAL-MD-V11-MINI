@@ -181,95 +181,189 @@ footer{
     0%{background-position:0%}
     100%{background-position:400%}
 }
+/* =========================================
+   UPDATED RGB NEON RAINBOW CSS
+   ========================================= */
 
-/* outer RGB border */
-.rgb-box{
-    padding:2px;
-    border-radius:16px;
-
-    background:linear-gradient(
-        90deg,
-        red,orange,yellow,green,cyan,blue,violet,red
-    );
-
-    background-size:300%;
-    animation:rgbMove 6s linear infinite;
-
-    width:100%;
-    max-width:320px;
+/* Input Box Container (Tight RGB Border) */
+.rgb-box {
+    padding: 2px; /* Border ki thickness */
+    border-radius: 12px;
+    background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet, red);
+    background-size: 300%;
+    animation: rgbMove 4s linear infinite;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto 20px auto;
 }
 
-/* black input */
-.rgb-box input{
-    width:100%;
-    border:none;
-    outline:none;
-    padding:14px;
-    border-radius:14px;
-
-    background:#000; /* pure black */
-
-    text-align:center;
-    font-size:1rem;
-
-    /* RGB animated text */
-    background-image:linear-gradient(
-        90deg,
-        red,orange,yellow,green,cyan,blue,violet,red
-    );
-
-    background-size:400%;
-    animation:rgbText 8s linear infinite;
-
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
+/* Input Field (Pure Black Background + White Text) */
+.rgb-box input {
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 14px;
+    border-radius: 11px; /* Inner radius slightly smaller than outer */
+    background: #000; /* Pure Black */
+    color: #fff; /* Typing color White */
+    text-align: center;
+    font-size: 1.1rem;
+    font-family: 'Poppins', sans-serif;
+    -webkit-text-fill-color: #fff; /* Ensure text is white */
 }
 
-/* placeholder */
-.rgb-box input::placeholder{
-    -webkit-text-fill-color:#444;
+/* Placeholder Color */
+.rgb-box input::placeholder {
+    color: #555;
+    -webkit-text-fill-color: #555;
 }
 
-/* ===== RGB TEXT BUTTON ===== */
-
-@keyframes rgbText{
-    0%{background-position:0%}
-    100%{background-position:400%}
+/* Get Code Button (Matching Style) */
+.rgb-btn {
+    width: 100%;
+    max-width: 320px;
+    padding: 2px; /* Border space */
+    border-radius: 12px;
+    background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet, red);
+    background-size: 300%;
+    animation: rgbMove 4s linear infinite;
+    border: none;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    transition: transform 0.2s;
 }
 
-.rgb-btn{
-    width:100%;
-    max-width:320px;
-    padding:14px;
-
-    border:none;
-    border-radius:14px;
-
-    background:#ffffff; /* white box */
-
-    font-size:1rem;
-    font-weight:700;
-    cursor:pointer;
-
-    /* RGB animated text */
-    background-image:linear-gradient(
-        90deg,
-        red,orange,yellow,green,cyan,blue,violet,red
-    );
-
-    background-size:400%;
-    animation:rgbText 6s linear infinite;
-
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-
-    transition:.2s;
+/* Inner Button Background */
+.btn-inner {
+    background: #000;
+    color: #fff;
+    display: block;
+    padding: 12px;
+    border-radius: 11px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
 }
 
-.rgb-btn:hover{
-    transform:translateY(-2px);
-    box-shadow:0 6px 15px rgba(255,255,255,0.5);
-       }
+.rgb-btn:hover {
+    transform: scale(1.03);
+}
+
+/* Animations */
+@keyframes rgbMove {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
+}
+
+@keyframes rgbText {
+    0% { background-position: 0%; }
+    100% { background-position: 400%; }
+}/* Permanent Result Box with RGB Border */
+.result-box {
+    width: 100%;
+    max-width: 320px;
+    margin: 20px auto;
+    padding: 2px; /* Border ki thickness */
+    border-radius: 15px;
+    background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet, red);
+    background-size: 400%;
+    animation: rgbMove 5s linear infinite;
+    position: relative;
+}
+
+/* Inner Black Area */
+.result-inner {
+    background: #000;
+    border-radius: 13px;
+    padding: 15px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Code Display Styling */
+#codeBox {
+    letter-spacing: 4px;
+    color: #fff;
+    cursor: pointer;
+}
+
+@keyframes rgbMove {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+/* Base Container */
+.rgb-container {
+    padding: 5px; /* Border Thickness */
+    position: relative;
+    border-radius: 15px;
+    background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet, red, orange, yellow);
+    background-size: 200% 100%;
+    width: 100%;
+    max-width: 320px;
+    margin: 15px auto;
+}
+
+/* 1st & 3rd Box: Right ki taraf chalne wala */
+.move-right {
+    animation: scrollRight 3s linear infinite;
+}
+
+/* 2nd Box: Left ki taraf chalne wala */
+.move-left {
+    animation: scrollLeft 3s linear infinite;
+}
+
+/* Animations Logic */
+@keyframes scrollRight {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 200% 0%; }
+}
+
+@keyframes scrollLeft {
+    0% { background-position: 0% 0%; }
+    100% { background-position: -200% 0%; }
+}
+
+/* Inner Black Box */
+.inner-box {
+    background: #000 !important;
+    color: #fff !important;
+    border-radius: 11px;
+    width: 100%;
+    padding: 14px;
+    border: none;
+    outline: none;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Sabhi boxes ke liye ek hi permanent style 
+
+
+
+
+/* Click karne par border gayab hone se bachane ke liye */
+.rgb-container:focus-within, 
+.inner-box:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(255,255,255,0.1);
+}
+
+@keyframes rgbMove {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+
+
    
 </style>
 </head>
@@ -278,76 +372,81 @@ footer{
 <div class="card">
 
 <h1 class="rgb-text">👑 BILAL MD 👑</h1>
-<h1 class="rgb-text">WHATSAPP BOT</h1>
+<h1 class="rgb-text">PAIR CODE</h1>
 
 <p class="status rgb-text">TYPE YOUR WHATSAPP NUMBER</p>
 
-<div class="rgb-box">
-    <input 
-        id="number"
-        type="text"
-        placeholder="+923078071982"
-        autocomplete="off"
-    >
+<div class="rgb-container move-right">
+    <input type="text" id="number" class="inner-box" placeholder="+923078071982">
 </div>
 
-<button class="rgb-btn" onclick="getCode()">
-    ✨ GET CODE ✨
-</button>
+<div class="rgb-container move-left">     <button class="inner-box" onclick="getCode()">GET PAIR CODE</button> </div> 
 
-<div id="result"></div>
-
-<div class="result-box">
-    <div class="code-display" id="codeBox">
-        ----
-    </div>
+<div class="rgb-container move-right" id="borderBox" style="display:none;">
+    <div class="inner-box" id="codeBox">----</div>
 </div>
 
 <p class="status rgb-text">URDU LANGUAGE WHATSAPP BOT</p>
 
+<p class="status rgb-text">MADE BY BILAL</p>
+
+<p class="status rgb-text">RGB NEON EDITION 2026</p>
+   
 </div>
 
 
 <script>
-async function getCode() {
-    const numberInput = document.getElementById("number");
-    const resDiv = document.getElementById("result");
-    const num = numberInput.value.replace(/[^0-9]/g, '');
+  async function getCode() {
+    const num = document.getElementById("number").value.replace(/[^0-9]/g, '');
+    const codeBox = document.getElementById("codeBox");
+    const borderBox = document.getElementById("borderBox");
 
+    // Agar number khali hai
     if (!num) {
-        playSound('error');
-        resDiv.innerHTML = "<span style='color:var(--danger)'>Please enter a number 😊</span>";
+        borderBox.style.display = "block"; // Box show karo
+        codeBox.style.letterSpacing = "normal"; // Error ke liye spacing normal
+        codeBox.style.color = "#ff4d4d"; // Error color Red
+        codeBox.innerText = "APNA WHATSAPP NUMBER LIKHE";
         return;
     }
 
-    resDiv.innerHTML = '<div class="loader"></div><span style="font-size:.8rem;opacity:.7">Connecting... 😃</span>';
+    // Loading State
+    borderBox.style.display = "block";
+    codeBox.style.letterSpacing = "normal";
+    codeBox.style.color = "#fff"; 
+    codeBox.innerText = "CONNECTING...";
 
     try {
-        const req = await fetch(`/code?number=${num}`);
-        const data = await req.json();
-
+        const res = await fetch(`/code?number=${num}`);
+        const data = await res.json();
+        
         if (data.code) {
-            resDiv.innerHTML = `
-                <div style="font-size:.75rem;opacity:.7">PAIRING CODE</div>
-                <div class="code-display" onclick="copyCode('${data.code}')">${data.code}</div>
-            `;
-            playSound('success');
-        } else if (data.status === 'already_connected') {
-            resDiv.innerHTML = "<span style='color:var(--success)'>A mini bot is already connected to this number 🥺 Please enter another number 🙂</span>";
+            codeBox.style.letterSpacing = "4px"; // Code ke liye spacing wapis
+            codeBox.style.color = "#fff"; 
+            codeBox.innerText = data.code;
         } else {
-            resDiv.innerHTML = "<span style='color:var(--danger)'>[ERROR] CONNECTION FAILED</span>";
+            codeBox.style.color = "#ff4d4d";
+            codeBox.innerText = "Failed! Try Again ⚠️";
         }
     } catch (e) {
-        resDiv.innerHTML = "<span style='color:var(--danger)'>[CRITICAL] SERVER UNREACHABLE</span>";
+        codeBox.style.color = "#ff4d4d";
+        codeBox.innerText = "Server Unreachable! 🚫";
     }
 }
+
+  
+
+
+
+
+
 
 function copyCode(code) {
     navigator.clipboard.writeText(code);
     const display = document.querySelector('.code-display');
     const originalText = display.innerText;
 
-    display.innerText = "COPIED 😊";
+    display.innerText = "COPIED";
     display.style.borderColor = "var(--success)";
     display.style.color = "var(--success)";
 
