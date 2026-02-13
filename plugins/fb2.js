@@ -3,39 +3,39 @@ const axios = require('axios');
 const { cmd } = require('../command');
 
 cmd({
-  pattern: 'fb2',
+  pattern: 'fb',
   desc: 'Download Facebook videos',
   category: 'downloader',
   filename: __filename
 }, async (conn, mek, m, { from, args, reply }) => {
   try {
     if (!args[0]) {
-      return reply('❌ *Provide a Facebook video link*');
+      return reply('*AP NE KOI FACEBOOK VIDEO DOWNLOAD KARNI HAI 🤔 TO AP US FACEBOOK VIDEO KA LINK COPY KAR LO 🤗*\n*PHOR ESE LIKHO ☺️*\n\n*FB ❮FACEBOOK VIDEO LINK❯*\n\n*JAB AP ESE LIKHO GE 😊 TO APKI FACEBOOK VIDEO DOWNLOAD KAR KE 😃 YAHA PER BHEJ DE JAYE GE 😍♥️*');
     }
 
     const fbUrl = args[0];
     const api = `https://apis-starlights-team.koyeb.app/starlight/facebook?url=${encodeURIComponent(fbUrl)}`;
 
     await conn.sendMessage(from, {
-      react: { text: '⏳', key: mek.key }
+      react: { text: '😃', key: mek.key }
     });
 
     const { data } = await axios.get(api);
 
     if (!data || !data.url) {
-      return reply('❌ *Failed to fetch video from Facebook*');
+      return reply('*APKI FACEBOOK VIDEO NAHI MIL RAHI 😔*');
     }
 
     const caption = `
-╭═══〘 *FACEBOOK DOWNLOADER* 〙═══⊷
-┃❍ *Title:* ${data.title || 'Facebook Video'}
-┃❍ *Author:* ${data.creator || 'Unknown'}
-┃❍ *Quality:* HD
-┃❍ *Source:* Facebook
-╰═════════════════════════⊷
+*👑 FB INFO 👑*
+*👑 VIDEO NAME 👑*
+${data.title || 'Facebook Video'}
 
-> *${config.BOT_NAME || 'POP KID-MD'}*
-> Powered by Starlight API
+*👑 CREATER NAME 👑*
+${data.creator || 'Unknown'}
+
+
+*👑 BY :❯ BILAL-MD 👑*
     `.trim();
 
     await conn.sendMessage(from, {
@@ -45,8 +45,8 @@ cmd({
         forwardingScore: 5,
         isForwarded: true,
         externalAdReply: {
-          title: data.title || 'Facebook Video',
-          body: 'Tap to watch or download',
+          title: data.title || 'PROUD TO PAKISTAN 🇵🇰',
+          body: 'MADE BY BILAL',
           thumbnailUrl: data.thumbnail || undefined,
           sourceUrl: fbUrl,
           mediaType: 1,
@@ -56,7 +56,7 @@ cmd({
     }, { quoted: mek });
 
     await conn.sendMessage(from, {
-      react: { text: '✅', key: mek.key }
+      react: { text: '🤗', key: mek.key }
     });
 
   } catch (e) {
