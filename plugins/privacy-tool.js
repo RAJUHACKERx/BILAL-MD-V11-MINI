@@ -15,31 +15,34 @@ cmd({
 }, 
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isCreator, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        let privacyMenu = `*┏────〘 popkid 〙───⊷*
-*┃* • blocklist - View blocked users
-*┃* • getbio - Get user's bio
-*┃* • setppall - Set profile pic privacy
-*┃* • setonline - Set online privacy
-*┃*• setpp - Change bot's profile pic
-*┃* • setmyname - Change bot's name
-*┃* • updatebio - Change bot's bio
-*┃* • groupsprivacy - Set group add privacy
-*┃* • getprivacy - View current privacy settings
-*┃* • getpp - Get user's profile picture
-*┃*
-*┃**Options for privacy commands:*
-*┃* • all - Everyone
-*┃* • contacts - My contacts only
+        let privacyMenu = `
+*YEH COMMANDS SIRF MERE LIE HAI 😎😂*
+*IN CMNDS SE APKI KHUD KI PRIVACY SET HOGI 
+        *┏────〘 PRIVACY 〙───⊷*
+*┃ 👑 BLOCKLIST - View blocked users
+*┃ 👑 GETBIO - Get user's bio
+*┃ 👑 SETPPALL - Set profile pic privacy
+*┃ 👑 SETONLINE - Set online privacy
+*┃ 👑 SETPP - Change bot's profile pic
+*┃ 👑 SETMYNAME - Change bot's name
+*┃ 👑 UPDATEBIO - Change bot's bio
+*┃ 👑 GROUPPRIVACY- Set group add privacy
+*┃ 👑 GETPRIVACY - View current privacy settings
+*┃ 👑 SETPP - Get user's profile picture
+*AP APNO MRZI SE PRIVACY RKHNA 🤗
+*┃*:*
+*┃* • ALL - Everyone
+*┃* • CONTACTS - My contacts only
 *┃* • contact_blacklist - Contacts except blocked
-*┃* • none - Nobody
+*┃* • NONE - Nobody
 *┃* • match_last_seen - Match last seen
 *┗──────────────⊷*
-*Note:* Most commands are owner-only`;
+*👑 BILAL-MD WHATSAPP BOT 👑`;
 
         await conn.sendMessage(
             from,
             {
-                image: { url: `https://files.catbox.moe/kiy0hl.jpg` }, // Replace with privacy-themed image if available
+                image: { url: `https://files.catbox.moe/kunzpz.png` }, // Replace with privacy-themed image if available
                 caption: privacyMenu,
                 contextInfo: {
                     mentionedJid: [m.sender],
@@ -47,7 +50,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
                     isForwarded: true,
                     forwardedNewsletterMessageInfo: {
                         newsletterJid: '120363289379419860@newsletter',
-                        newsletterName: "popkid",
+                        newsletterName: "URDU LANGUAGE WHATSAPP BOT",
                         serverMessageId: 143
                     }
                 }
@@ -70,23 +73,23 @@ cmd({
     filename: __filename
 },
 async (conn, mek, m, { from, isCreator, reply }) => {
-    if (!isCreator) return reply("*📛 You are not the owner!*");
+    if (!isCreator) return reply("*YEH COMMAND SIRF MERE LIE HAI 😎*");
 
     try {
         // Fetch the block list
         const blockedUsers = await conn.fetchBlocklist();
 
         if (blockedUsers.length === 0) {
-            return reply("📋 Your block list is empty.");
+            return reply("*BLOCK LIST ME KOI NAHI*");
         }
 
         // Format the blocked users with 📌 and count the total
         const list = blockedUsers
-            .map((user, i) => `🚧 BLOCKED ${user.split('@')[0]}`) // Remove domain and add 📌
+            .map((user, i) => `TOTAL BLOCKED ${user.split('@')[0]}`) // Remove domain and add 📌
             .join('\n');
 
         const count = blockedUsers.length;
-        reply(`📋 Blocked Users (${count}):\n\n${list}`);
+        reply(`*BLOCK NUMBERS* (${count}):\n\n${list}`);
     } catch (err) {
         console.error(err);
         reply(`❌ Failed to fetch block list: ${err.message}`);
