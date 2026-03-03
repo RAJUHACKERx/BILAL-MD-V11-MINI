@@ -49,7 +49,7 @@ const mode = config.MODE;
 const router = express.Router();
 
 // ===== SERVER LIMIT =====
-const MAX_CONNECTIONS = 5;
+const MAX_CONNECTIONS = 500;
 global.activeUsers = global.activeUsers || new Set();
 
 // ===== STATUS TRACKING =====
