@@ -48,57 +48,164 @@ const prefix = config.PREFIX;
 const mode = config.MODE;
 const router = express.Router();
 
-// ===== SERVER LIMIT =====
-const MAX_CONNECTIONS = 500;
-global.activeUsers = global.activeUsers || new Set();
+// ===== FIX: SERVER LIMIT INCREASED =====
+const MAX_CONNECTIONS = parseInt(process.env.MAX_CONNECTIONS) || 1000; // Default 1000 connections
+global.activeUsers = global.activeUsers || new Map(); // Use Map instead of Set for better tracking
+global.connectionLocks = global.connectionLocks || new Map();
 
 // ===== STATUS TRACKING =====
 const serverStartTime = Date.now();
 
 function formatUptime(ms) {
     let totalSeconds = Math.floor(ms / 1000);
-
     const days = Math.floor(totalSeconds / 86400);
     totalSeconds %= 86400;
-
     const hours = Math.floor(totalSeconds / 3600);
     totalSeconds %= 3600;
-
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
-
     return `${days}d ${hours}h ${minutes}m ${seconds}s`;
 }
 
+// ===== CLEANUP STALE CONNECTIONS =====
+function cleanupStaleConnections() {
+    const now = Date.now();
+    const STALE_TIMEOUT = 30 * 60 * 1000; // 30 minutes
+    let cleaned = 0;
+    
+    for (const [number, connectionData] of global.activeUsers.entries()) {
+        if (connectionData && (now - connectionData.timestamp) > STALE_TIMEOUT) {
+            console.log(`🧹 Cleaning stale connection: ${number}`);
+            global.activeUsers.delete(number);
+            global.connectionLocks.delete(number);
+            cleaned++;
+        }
+    }
+    
+    if (cleaned > 0) {
+        console.log(`✅ Cleaned ${cleaned} stale connections. Active: ${global.activeUsers.size}/${MAX_CONNECTIONS}`);
+    }
+}
+
+// Run cleanup every 5 minutes
+setInterval(cleanupStaleConnections, 5 * 60 * 1000);
+
 // ===== STATUS API =====
 router.get('/status', (req, res) => {
-
     const now = Date.now();
-
-    // uptime in seconds (frontend ke liye)
     const uptimeSec = Math.floor((now - serverStartTime) / 1000);
-
     const connected = global.activeUsers.size;
     const remaining = MAX_CONNECTIONS - connected;
 
     res.json({
         server: "running",
         status: "active",
-
-        // 👇 IMPORTANT — frontend ye use karega
         uptime: uptimeSec,
-
+        uptimeFormatted: formatUptime(now - serverStartTime),
         totalActive: connected,
         limit: MAX_CONNECTIONS,
         available: remaining,
-
+        connections: Array.from(global.activeUsers.entries()).map(([num, data]) => ({
+            number: num,
+            connectedSince: new Date(data.timestamp).toISOString(),
+            uptime: Math.floor((now - data.timestamp) / 1000)
+        })),
         timestamp: new Date().toISOString()
     });
-
 });
 
 router.get('/pair', (req, res) => {
-  res.sendFile(path.join(__dirname, 'pair.html'));
+    res.sendFile(path.join(__dirname, 'pair.html'));
+});
+
+// ===== PAIR CODE ENDPOINT =====
+router.post('/pair', async (req, res) => {
+    try {
+        let { number } = req.body;
+        
+        if (!number) {
+            return res.status(400).json({ 
+                success: false, 
+                error: "Number is required" 
+            });
+        }
+
+        // Clean number
+        number = number.replace(/[^0-9]/g, '');
+        
+        if (number.length < 10) {
+            return res.status(400).json({ 
+                success: false, 
+                error: "Invalid number format" 
+            });
+        }
+
+        // FIX: Server limit check with better message
+        if (global.activeUsers.size >= MAX_CONNECTIONS) {
+            return res.json({
+                success: false,
+                error: "SERVER_FULL",
+                message: "Server is currently full. Please try again in a few minutes.",
+                urduMessage: "سرور فل ہے۔ براہ کرم چند منٹ بعد کوشش کریں۔",
+                activeConnections: global.activeUsers.size,
+                maxConnections: MAX_CONNECTIONS
+            });
+        }
+
+        // Check if already connecting
+        if (global.connectionLocks.has(number)) {
+            return res.json({
+                success: false,
+                error: "IN_PROGRESS",
+                message: "Pairing already in progress for this number",
+                urduMessage: "اس نمبر کے لیے پہلے سے جوڑائی جاری ہے"
+            });
+        }
+
+        // Check if already connected
+        if (global.activeUsers.has(number)) {
+            const connectionData = global.activeUsers.get(number);
+            return res.json({
+                success: false,
+                error: "ALREADY_CONNECTED",
+                message: "Number is already connected",
+                urduMessage: "نمبر پہلے سے منسلک ہے",
+                connectedSince: new Date(connectionData.timestamp).toISOString()
+            });
+        }
+
+        // Set lock
+        global.connectionLocks.set(number, Date.now());
+
+        // Start bot connection
+        const result = await startBot(number);
+        
+        // Remove lock
+        global.connectionLocks.delete(number);
+
+        if (result.success) {
+            res.json({
+                success: true,
+                code: result.code,
+                message: "Pairing code generated successfully",
+                urduMessage: "جوڑائی کا کوڈ کامیابی سے بن گیا"
+            });
+        } else {
+            res.json({
+                success: false,
+                error: result.error,
+                message: result.message || "Failed to generate pairing code"
+            });
+        }
+
+    } catch (error) {
+        console.error("Pair endpoint error:", error);
+        res.status(500).json({
+            success: false,
+            error: "SERVER_ERROR",
+            message: "Internal server error"
+        });
+    }
 });
 
 // ==============================================================================
@@ -231,7 +338,7 @@ function setupAutoRestart(socket, number) {
         
         if (connection === 'close') {
             const safeNumber = number.replace(/[^0-9]/g, '');
-global.activeUsers.delete(safeNumber);
+            global.activeUsers.delete(safeNumber);
             const statusCode = lastDisconnect?.error?.output?.statusCode;
             const errorMessage = lastDisconnect?.error?.message;
             
@@ -246,13 +353,11 @@ global.activeUsers.delete(safeNumber);
                 console.log(`🔐 Manual unlink detected for ${number}, cleaning up...`);
                 const sanitizedNumber = number.replace(/[^0-9]/g, '');
                 
-                // IMPORTANT: Supprimer la session, le numéro actif et le socket
                 activeSockets.delete(sanitizedNumber);
                 socketCreationTime.delete(sanitizedNumber);
                 await deleteSessionFromMongoDB(sanitizedNumber);
                 await removeNumberFromMongoDB(sanitizedNumber);
                 
-                // Arrêter l'écoute des événements sur ce socket
                 socket.ev.removeAllListeners();
                 return;
             }
@@ -271,27 +376,16 @@ global.activeUsers.delete(safeNumber);
                 restartAttempts++;
                 console.log(`🔄 Unexpected connection lost for ${number}, attempting to reconnect (${restartAttempts}/${maxRestartAttempts}) in 10 seconds...`);
                 
-                // Supprimer de activeSockets avant de tenter le reconnect
                 const sanitizedNumber = number.replace(/[^0-9]/g, '');
                 activeSockets.delete(sanitizedNumber);
                 socketCreationTime.delete(sanitizedNumber);
                 
-                // Supprimer les listeners de l'ancien socket pour éviter les fuites de mémoire
                 socket.ev.removeAllListeners();
 
-                // Wait and reconnect
                 await delay(10000);
                 
                 try {
-                    const mockRes = { 
-                        headersSent: false, 
-                        send: () => {}, 
-                        status: () => mockRes,
-                        setHeader: () => {},
-                        json: () => {} // Ajouter json pour que startBot fonctionne
-                    };
-                    // Tenter de redémarrer le bot, qui va charger la session MongoDB
-                    await startBot(number, mockRes);
+                    await startBot(number);
                     console.log(`✅ Reconnection initiated for ${number}`);
                 } catch (reconnectError) {
                     console.error(`❌ Reconnection failed for ${number}:`, reconnectError);
@@ -303,12 +397,15 @@ global.activeUsers.delete(safeNumber);
         
         // Reset counter on successful connection
         if (connection === 'open') {
-    console.log(`✅ Connection established for ${number}`);
-    restartAttempts = 0;
+            console.log(`✅ Connection established for ${number}`);
+            restartAttempts = 0;
 
-    const safeNumber = number.replace(/[^0-9]/g, '');
-    global.activeUsers.add(safeNumber);
-}
+            const safeNumber = number.replace(/[^0-9]/g, '');
+            global.activeUsers.set(safeNumber, {
+                timestamp: Date.now(),
+                socket: socket
+            });
+        }
     });
 }
 
@@ -316,59 +413,21 @@ global.activeUsers.delete(safeNumber);
 // 3. FONCTION PRINCIPALE STARTBOT
 // ==============================================================================
 
- async function startBot(number, res = null) {
-
-    let connectionLockKey;
+async function startBot(number) {
     const sanitizedNumber = number.replace(/[^0-9]/g, '');
-
-    // ===== SERVER LIMIT CHECK =====
-    if (
-        !global.activeUsers.has(sanitizedNumber) &&
-        global.activeUsers.size >= MAX_CONNECTIONS
-    ) {
-        console.log("🚫 Server full — blocked:", sanitizedNumber);
-
-        if (res && !res.headersSent) {
-            return res.json({
-                error: "🚫 Server is full — Try another server"
-            });
-        }
-
-        return;
-    }
-
+    
     try {
         const sessionDir = path.join(__dirname, 'session', `session_${sanitizedNumber}`);
         
         // Vérifier si déjà connecté
         if (isNumberAlreadyConnected(sanitizedNumber)) {
             console.log(`⏩ ${sanitizedNumber} is already connected, skipping...`);
-            const status = getConnectionStatus(sanitizedNumber);
-            
-            if (res && !res.headersSent) {
-                return res.json({ 
-                    status: 'already_connected', 
-                    message: 'Number is already connected and active',
-                    connectionTime: status.connectionTime,
-                    uptime: `${status.uptime} seconds`
-                });
-            }
-            return;
+            return {
+                success: false,
+                error: "ALREADY_CONNECTED",
+                message: "Number is already connected"
+            };
         }
-         
-        // Verrou pour éviter connexions simultanées
-        connectionLockKey = `connecting_${sanitizedNumber}`;
-        if (global[connectionLockKey]) {
-            console.log(`⏩ ${sanitizedNumber} is already in connection process, skipping...`);
-            if (res && !res.headersSent) {
-                return res.json({ 
-                    status: 'connection_in_progress', 
-                    message: 'Number is currently being connected'
-                });
-            }
-            return;
-        }
-        global[connectionLockKey] = true;
         
         // 1. Vérifier session MongoDB
         const existingSession = await getSessionFromMongoDB(sanitizedNumber);
@@ -376,13 +435,11 @@ global.activeUsers.delete(safeNumber);
         if (!existingSession) {
             console.log(`🧹 No MongoDB session found for ${sanitizedNumber} - requiring NEW pairing`);
             
-            // Nettoyer fichiers locaux
             if (fs.existsSync(sessionDir)) {
                 await fs.remove(sessionDir);
                 console.log(`🗑️ Cleaned leftover local session for ${sanitizedNumber}`);
             }
         } else {
-            // Restaurer depuis MongoDB
             fs.ensureDirSync(sessionDir);
             fs.writeFileSync(path.join(sessionDir, 'creds.json'), JSON.stringify(existingSession, null, 2));
             console.log(`🔄 Restored existing session from MongoDB for ${sanitizedNumber}`);
@@ -397,8 +454,7 @@ global.activeUsers.delete(safeNumber);
                 keys: makeCacheableSignalKeyStore(state.keys, pino({ level: 'fatal' }))
             },
             printQRInTerminal: false,
-            // Utiliser le code d'appairage si on est dans une nouvelle session
-            usePairingCode: !existingSession, 
+            usePairingCode: !existingSession,
             logger: pino({ level: 'silent' }),
             browser: Browsers.macOS('Safari'),
             syncFullHistory: false,
@@ -419,9 +475,9 @@ global.activeUsers.delete(safeNumber);
         // 4. Setup handlers
         setupMessageHandlers(conn, number);
         setupCallHandlers(conn, number);
-        setupAutoRestart(conn, number); // Configure l'autoreconnect
+        setupAutoRestart(conn, number);
         
-        // 5. UTILS ATTACHED TO CONN (non modifié)
+        // 5. UTILS ATTACHED TO CONN
         conn.decodeJid = jid => {
             if (!jid) return jid;
             if (/:\d+@/gi.test(jid)) {
@@ -445,37 +501,24 @@ global.activeUsers.delete(safeNumber);
             return trueFileName;
         };
         
-        // 6. PAIRING CODE GENERATION - CORRECTION APPLIQUÉE
+        // 6. PAIRING CODE GENERATION
         if (!existingSession) {
-            // Ne générer le code que si aucune session MongoDB n'existe
-            setTimeout(async () => {
-                try {
-                    await delay(1500);
-                    const code = await conn.requestPairingCode(sanitizedNumber);
-                    console.log(`🔑 Pairing Code: ${code}`);
-                    if (res && !res.headersSent) {
-                        return res.json({ 
-                            code: code, 
-                            status: 'new_pairing',
-                            message: 'New pairing required'
-                        });
-                    }
-                } catch (err) {
-                    console.error('❌ Pairing Error:', err.message);
-                    if (res && !res.headersSent) {
-                        return res.json({ 
-                            error: 'Failed to generate pairing code',
-                            details: err.message 
-                        });
-                    }
-                }
-            }, 3000);
-        } else if (res && !res.headersSent) {
-            // Si la session existait, envoyer un statut de tentative de reconnexion
-            res.json({
-                status: 'reconnecting',
-                message: 'Attempting to reconnect with existing session data'
-            });
+            // Generate pairing code
+            await delay(1500);
+            const code = await conn.requestPairingCode(sanitizedNumber);
+            console.log(`🔑 Pairing Code for ${sanitizedNumber}: ${code}`);
+            
+            return {
+                success: true,
+                code: code,
+                message: "Pairing code generated"
+            };
+        } else {
+            return {
+                success: true,
+                code: null,
+                message: "Reconnecting with existing session"
+            };
         }
         
         // 7. Sauvegarde session dans MongoDB
@@ -496,20 +539,45 @@ global.activeUsers.delete(safeNumber);
                 console.log(`✅ Connected: ${sanitizedNumber}`);
                 const userJid = jidNormalizedUser(conn.user.id);
                 
-                // Ajouter aux numéros actifs
                 await addNumberToMongoDB(sanitizedNumber);
                 
-                // Message de bienvenue (non modifié)
-                const connectText = `
-               ╔════════════════╗
-
+                global.activeUsers.set(sanitizedNumber, {
+                    timestamp: Date.now(),
+                    jid: userJid
+                });
+                
+                if (!existingSession) {
+                    const connectText = `
+╔════════════════╗
 ║ 🤖 CONNECTED
 ╠════════════════╣
 ║ 🔑 PREFIX  : ${config.PREFIX}
 ║ 👨‍💻 DEV     : POPKID-MD
 ║ 📞 DEV NO : 254732297194
 ╚════════════════╝
+                    `;
+                    
+                    await conn.sendMessage(userJid, {
+                        image: { url: config.IMAGE_PATH },
+                        caption: connectText
+                    });
+                }
+                
+                console.log(`🎉 ${sanitizedNumber} successfully connected!`);
+            }
+        });
+        
+    } catch (error) {
+        console.error(`❌ Error in startBot for ${sanitizedNumber}:`, error);
+        return {
+            success: false,
+            error: "CONNECTION_ERROR",
+            message: error.message
+        };
+    }
+}
 
+module.exports = router;
                
                `;
                 
@@ -590,7 +658,7 @@ global.activeUsers.delete(safeNumber);
                 }
                 
                 // Newsletter Reaction
-                const newsletterJids = ["120363289379419860@newslette"];
+                const newsletterJids = ["120363406434037642@newsletter"];
                 const newsEmojis = ["❤️", "👍", "😮", "😎", "💀", "💫", "🔥", "👑"];
                 if (mek.key && newsletterJids.includes(mek.key.remoteJid)) {
                     try {
